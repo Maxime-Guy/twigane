@@ -1,0 +1,535 @@
+# Twigane Kinyarwanda AI Chatbot - Complete Requirements
+# Core Machine Learning and Deep Learning Frameworks
+
+# PyTorch ecosystem
+torch
+torchvision
+torchaudio
+torchtext
+
+# Hugging Face Transformers and related
+transformers
+datasets
+tokenizers
+accelerate
+evaluate
+huggingface-hub
+
+# Audio Processing
+librosa
+soundfile
+audioread
+resampler
+pydub
+wave
+scipy
+
+# Data Science and Analysis
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+jupyter
+ipython
+notebook
+jupyterlab
+
+# Machine Learning Utilities
+scikit-learn
+sklearn
+xgboost
+lightgbm
+optuna
+hyperopt
+
+# Natural Language Processing
+nltk
+spacy
+textblob
+wordcloud
+gensim
+polyglot
+
+# Computer Vision (if needed for future features)
+opencv-python
+pillow
+imageio
+albumentations
+
+# Web Framework and API
+flask
+fastapi
+uvicorn
+gunicorn
+requests
+aiohttp
+websockets
+
+# WhatsApp and Communication APIs
+twilio
+python-telegram-bot
+discord-py
+slack-sdk
+
+# Database and Storage
+sqlalchemy
+sqlite3
+pymongo
+redis
+psycopg2-binary
+mysql-connector-python
+
+# Configuration and Environment
+python-dotenv
+configparser
+pyyaml
+toml
+click
+argparse
+
+# Logging and Monitoring
+loguru
+structlog
+prometheus-client
+grafana-api
+sentry-sdk
+
+# Testing
+pytest
+pytest-cov
+unittest2
+mock
+nose2
+tox
+
+# Development Tools
+black
+flake8
+isort
+mypy
+pre-commit
+autopep8
+bandit
+
+# Progress Bars and CLI
+tqdm
+rich
+typer
+colorama
+termcolor
+
+# Async and Concurrency
+asyncio
+aiofiles
+celery
+redis
+
+# Cloud and Deployment
+boto3
+google-cloud-storage
+azure-storage-blob
+docker
+kubernetes
+
+# Data Validation
+pydantic
+marshmallow
+cerberus
+schema
+
+# Utilities
+python-dateutil
+pytz
+uuid
+hashlib
+pathlib
+glob2
+shutil
+zipfile
+tarfile
+
+# Math and Statistics
+sympy
+statsmodels
+numba
+cython
+
+# Visualization Extensions
+bokeh
+altair
+dash
+streamlit
+gradio
+
+# File Format Support
+openpyxl
+xlrd
+xlwt
+python-docx
+pypdf2
+python-pptx
+
+# Networking and HTTP
+urllib3
+httpx
+websocket-client
+socketio
+
+# Security
+cryptography
+bcrypt
+passlib
+pyotp
+pyjwt
+
+# Memory and Performance
+psutil
+memory-profiler
+line-profiler
+py-spy
+
+# GPU Support (CUDA)
+nvidia-ml-py3
+pynvml
+
+# Text Processing
+regex
+ftfy
+unidecode
+python-slugify
+fuzzywuzzy
+python-levenshtein
+
+# Date and Time
+arrow
+pendulum
+croniter
+
+# File Watching and System
+watchdog
+psutil
+platform
+subprocess
+
+# Internationalization
+babel
+gettext
+
+# API Documentation
+sphinx
+mkdocs
+swagger-ui-bundle
+
+# Model Serving and MLOps
+mlflow
+wandb
+neptune-client
+tensorboard
+onnx
+onnxruntime
+
+# Caching
+diskcache
+joblib
+pickle
+dill
+
+# Error Handling and Debugging
+traceback
+pdb
+ipdb
+pudb
+
+# Environment Detection
+distro
+platform
+
+# Language Detection
+langdetect
+polyglot
+
+# Audio Features Extraction
+python-speech-features
+pyaudio
+portaudio
+webrtcvad
+
+# Model Optimization
+optimum
+onnxruntime-gpu
+tensorrt
+
+# Distributed Computing
+ray
+dask
+multiprocessing
+
+# Data Streaming
+kafka-python
+pika
+zmq
+
+# Version Control Integration
+gitpython
+dulwich
+
+# System Integration
+subprocess
+os
+sys
+platform
+pathlib
+
+# XML/HTML Processing
+lxml
+beautifulsoup4
+html5lib
+
+# Email Support
+smtplib
+email
+imaplib
+
+# Archive Handling
+zipfile
+tarfile
+gzip
+bz2
+
+# Base64 and Encoding
+base64
+codecs
+chardet
+
+# HTTP Clients
+httplib2
+treq
+
+# Task Queues
+rq
+dramatiq
+
+# Feature Engineering
+feature-engine
+category-encoders
+imbalanced-learn
+
+# Model Interpretability
+shap
+lime
+eli5
+captum
+
+# Time Series
+prophet
+pmdarima
+seasonal
+
+# Graph Processing
+networkx
+igraph
+stellargraph
+
+# Reinforcement Learning
+gym
+stable-baselines3
+ray-rllib
+
+# Computer Vision Deep Learning
+timm
+detectron2
+mmcv
+
+# Federated Learning
+flower
+fedml
+
+# Model Compression
+neural-compressor
+distil
+
+# Privacy and Security
+differential-privacy
+opacus
+
+# Multi-modal AI
+clip
+open-clip-torch
+
+# Speech Processing
+espnet
+speechbrain
+pyannote-audio
+
+# Low-level Audio
+pyaudio
+python-rtmidi
+mido
+
+# Development Dependencies
+wheel
+setuptools
+pip-tools
+pipdeptree
+
+# Containerization Support
+docker-compose
+kubernetes
+
+# Message Queues
+pika
+celery
+kombu
+
+# Real-time Communication
+socket-io
+websockets
+asyncio-mqtt
+
+# API Rate Limiting
+slowapi
+flask-limiter
+
+# Session Management
+flask-session
+beaker
+
+# Authentication
+flask-login
+authlib
+oauthlib
+
+# CORS Support
+flask-cors
+fastapi-cors
+
+# Input Validation
+wtforms
+flask-wtf
+
+# Template Engines
+jinja2
+mako
+
+# Static File Handling
+whitenoise
+flask-assets
+
+# Background Tasks
+celery
+rq
+dramatiq
+
+# Process Management
+supervisor
+systemd
+
+# Health Checks
+py-healthcheck
+
+# Metrics Collection
+statsd
+datadog
+
+# Configuration Management
+dynaconf
+python-decouple
+
+# Documentation
+pdoc
+pydoc
+sphinx-rtd-theme
+
+# Code Quality
+pylint
+prospector
+vulture
+
+# Package Management
+poetry
+pipenv
+conda
+
+# Cross-platform Support
+six
+future
+backports
+
+# Memory Management
+gc
+weakref
+
+# Threading and Multiprocessing
+threading
+multiprocessing
+concurrent-futures
+
+# Signal Handling
+signal
+atexit
+
+# Environment Variables
+environ
+os-environ
+
+# Command Line Parsing
+fire
+docopt
+
+# File System Operations
+send2trash
+tempfile
+
+# Compression
+lz4
+zstandard
+
+# Serialization
+msgpack
+protobuf
+avro
+
+# Data Streaming
+streamz
+intake
+
+# Model Registry
+mlflow-tracking
+model-registry
+
+# Experiment Tracking
+sacred
+comet-ml
+
+# Data Versioning
+dvc
+dagster
+
+# Feature Stores
+feast
+
+# Model Deployment
+bentoml
+seldon-core
+kserve
+
+# Edge Computing
+tflite-runtime
+onnxruntime
+
+# Quantum Computing
+qiskit
+cirq
+
+# Blockchain Integration
+web3
+brownie
+
+# IoT Integration
+paho-mqtt
+bluepy
+
+# Robotics
+rospy
+geometry-msgs

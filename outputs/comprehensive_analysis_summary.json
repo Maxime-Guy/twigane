@@ -1,0 +1,35 @@
+{
+  "analysis_date": "2025-06-09T23:07:31.474298",
+  "dataset_overview": {
+    "total_samples": 46,
+    "text_features": 10,
+    "audio_samples_analyzed": 15
+  },
+  "quality_metrics": {
+    "text_quality": {
+      "optimal_length_ratio": 0.34782608695652173,
+      "vocabulary_diversity": 0.6607142857142857,
+      "total_samples": 46
+    },
+    "audio_quality": {
+      "optimal_duration_ratio": 0.9333333333333333,
+      "sample_rate_consistency": 1,
+      "total_audio_samples": 15
+    }
+  },
+  "files_generated": [],
+  "text_analysis": {
+    "avg_sentence_length": 8.826086956521738,
+    "avg_words_per_sentence": 1.2173913043478262,
+    "min_sentence_length": 3,
+    "max_sentence_length": 20
+  },
+  "audio_analysis": {
+    "avg_duration": 3.484813303099018,
+    "min_duration": 2.088027210884354,
+    "max_duration": 10.08,
+    "sample_rates": [
+      22050
+    ]
+  }
+}

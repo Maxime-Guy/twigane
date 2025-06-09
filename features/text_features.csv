@@ -1,0 +1,47 @@
+path,sentence,char_count,word_count,avg_word_length,vowel_count,consonant_count,punctuation_count,complexity_score,readability_score
+common_voice_rw_41944481.mp3,amakuru mashya,14,2,6.5,6,7,0,0,0.2857142857142857
+common_voice_rw_41944482.mp3,zeru,4,1,4.0,2,2,0,0,0.25
+common_voice_rw_41944483.mp3,murwanda,8,1,8.0,3,5,0,0,0.125
+common_voice_rw_41944484.mp3,kuvugisha ubishinzwe,20,2,9.5,8,11,0,0,0.2
+common_voice_rw_41944487.mp3,gatanu,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_41978020.mp3,murwanda,8,1,8.0,3,5,0,0,0.125
+common_voice_rw_42157139.mp3,kwipima,7,1,7.0,3,4,0,0,0.14285714285714285
+common_voice_rw_42157140.mp3,ingendo,7,1,7.0,3,4,0,0,0.14285714285714285
+common_voice_rw_42157141.mp3,ibihano namande,15,2,7.0,7,7,0,0,0.26666666666666666
+common_voice_rw_42157142.mp3,ibiciro,7,1,7.0,4,3,0,0,0.14285714285714285
+common_voice_rw_42157143.mp3,ibibujijwe,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42177733.mp3,gatandatu,9,1,9.0,4,5,0,0,0.1111111111111111
+common_voice_rw_42341197.mp3,ibihano namande,15,2,7.0,7,7,0,0,0.26666666666666666
+common_voice_rw_42341198.mp3,amabwiriza,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42341199.mp3,rimwe,5,1,5.0,2,3,0,0,0.2
+common_voice_rw_42341200.mp3,kabiri,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_42341201.mp3,icyenda,7,1,7.0,3,4,0,0,0.14285714285714285
+common_voice_rw_42527078.mp3,amabwiriza,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42527079.mp3,amasaha ntarengwa,17,2,8.0,7,9,0,0,0.23529411764705882
+common_voice_rw_42527080.mp3,umunani,7,1,7.0,4,3,0,0,0.14285714285714285
+common_voice_rw_42527081.mp3,gumamurugo,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42527082.mp3,oya,3,1,3.0,2,1,0,0,0.3333333333333333
+common_voice_rw_42527083.mp3,abaturanyi,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42527084.mp3,ibihano namande,15,2,7.0,7,7,0,0,0.26666666666666666
+common_voice_rw_42527085.mp3,gatandatu,9,1,9.0,4,5,0,0,0.1111111111111111
+common_voice_rw_42527086.mp3,ibikenewe,9,1,9.0,5,4,0,0,0.1111111111111111
+common_voice_rw_42527087.mp3,ibyo usabwa,11,2,5.0,5,5,0,0,0.36363636363636365
+common_voice_rw_42564367.mp3,izemerewe,9,1,9.0,5,4,0,0,0.1111111111111111
+common_voice_rw_42611387.mp3,ahantu,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_42611388.mp3,ibikenewe,9,1,9.0,5,4,0,0,0.1111111111111111
+common_voice_rw_42611389.mp3,uburyo,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_42611390.mp3,zeru,4,1,4.0,2,2,0,0,0.25
+common_voice_rw_42611391.mp3,kabiri,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_42611392.mp3,iwawe,5,1,5.0,3,2,0,0,0.2
+common_voice_rw_42614242.mp3,gumamurugo,10,1,10.0,5,5,0,0,0.1
+common_voice_rw_42614243.mp3,kabiri,6,1,6.0,3,3,0,0,0.16666666666666666
+common_voice_rw_42614244.mp3,bigenda,7,1,7.0,3,4,0,0,0.14285714285714285
+common_voice_rw_42614245.mp3,mpuzamahanga,12,1,12.0,5,7,0,0,0.08333333333333333
+common_voice_rw_42614246.mp3,karindwi,8,1,8.0,3,5,0,0,0.125
+common_voice_rw_42619509.mp3,ibyo usabwa,11,2,5.0,5,5,0,0,0.36363636363636365
+common_voice_rw_42619510.mp3,ibikenewe,9,1,9.0,5,4,0,0,0.1111111111111111
+common_voice_rw_42619511.mp3,ku isi,6,2,2.5,3,2,0,0,0.6666666666666666
+common_voice_rw_42619512.mp3,ingendo,7,1,7.0,3,4,0,0,0.14285714285714285
+common_voice_rw_42619513.mp3,mpuzamahanga,12,1,12.0,5,7,0,0,0.08333333333333333
+common_voice_rw_42619737.mp3,mugihugu,8,1,8.0,4,4,0,0,0.125
+common_voice_rw_42619738.mp3,ku isi,6,2,2.5,3,2,0,0,0.6666666666666666
