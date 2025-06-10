@@ -1,5 +1,5 @@
 {
-  "analysis_date": "2025-06-09T23:07:31.474298",
+  "analysis_date": "2025-06-10T14:07:03.246797",
   "dataset_overview": {
     "total_samples": 46,
     "text_features": 10,
@@ -25,8 +25,8 @@
     "max_sentence_length": 20
   },
   "audio_analysis": {
-    "avg_duration": 3.484813303099018,
-    "min_duration": 2.088027210884354,
+    "avg_duration": 4.082409674981103,
+    "min_duration": 2.3760090702947845,
     "max_duration": 10.08,
     "sample_rates": [
       22050

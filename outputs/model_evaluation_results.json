@@ -1,0 +1,15 @@
+{
+  "language_understanding": {
+    "status": "evaluated",
+    "test_samples": 5,
+    "average_difficulty": 2.0
+  },
+  "teaching_generator": {
+    "status": "error",
+    "error": "Placeholder storage has not been allocated on MPS device!"
+  },
+  "integrated_system": {
+    "status": "error",
+    "error": "name 'chatbot' is not defined"
+  }
+}
