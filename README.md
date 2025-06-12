@@ -248,10 +248,9 @@ python interactive_demo.py
 ```
 twigane-kinyarwanda-assistant/
 │
-├── 📓 kinyarwanda_assistant_full.ipynb    # Main notebook
+├── 📓 twigane_notebook.ipynb    # Main notebook
 ├── 📄 README.md                            # This file
 ├── 📄 requirements.txt                     # Dependencies
-├── 📄 LICENSE                              # MIT License
 │
 ├── 📂 dataset/                             # Data directory
 │   └── cv-corpus-21.0-delta-2025-03-14/
@@ -270,23 +269,11 @@ twigane-kinyarwanda-assistant/
 │   ├── text_features/
 │   └── combined_features.csv
 │
-├── 📂 outputs/                             # Results & visualizations
-│   ├── evaluation_results.json
-│   ├── performance_metrics.png
-│   └── sample_conversations.txt
-│
-├── 📂 src/                                 # Source code
-│   ├── __init__.py
-│   ├── data_processing.py
-│   ├── models.py
-│   ├── training.py
-│   ├── evaluation.py
-│   └── chatbot.py
-│
-└── 📂 scripts/                             # Utility scripts
-    ├── download_dataset.sh
-    ├── preprocess_audio.py
-    └── export_model.py
+└── 📂 outputs/                             # Results & visualizations
+   ├── evaluation_results.json
+   ├── performance_metrics.png
+   └── sample_conversations.txt
+
 ```
 
 ## 🤖 Models
@@ -298,10 +285,6 @@ twigane-kinyarwanda-assistant/
   - Difficulty Classification (1-5 scale)
   - Grammar Type Detection (8 categories)
   - Teaching Intent Recognition (6 types)
-- **Performance**:
-  - Accuracy: 87.3%
-  - F1 Score: 0.85
-  - Inference Time: <50ms
 
 ### 2. Teaching Response Generator
 
@@ -310,20 +293,11 @@ twigane-kinyarwanda-assistant/
   - 8 special teaching tokens
   - Context embeddings
   - Cultural knowledge integration
-- **Performance**:
-  - Perplexity: 12.4
-  - BLEU Score: 0.72
-  - Response Quality: 4.2/5 (human eval)
 
 ### 3. Whisper ASR (Kinyarwanda)
 
 - **Base Model**: openai/whisper-tiny
 - **Fine-tuning**: 2,218 Kinyarwanda audio clips
-- **Performance**:
-  - WER: 15.3%
-  - Real-time Factor: 0.8x
-  - Language Detection: 98.5%
-
 
 ### Sample Interactions
 
