@@ -10,7 +10,7 @@
 
 <div align="center">
   <h3>🎥 Video Demo</h3>
-  <a href="YOUTUBE_VIDEO_LINK_HERE">
+  <a href="https://youtu.be/zWPCQjmRP4k">
     <img src="https://img.shields.io/badge/YouTube-Demo-red?style=for-the-badge&logo=youtube" alt="YouTube Demo">
   </a>
   <p><i>Click above to know more about the project!</i></p>
@@ -26,10 +26,7 @@
 - [Usage](#-usage)
 - [Project Structure](#-project-structure)
 - [Models](#-models)
-- [Results](#-results)
 - [Future Improvements](#-future-improvements)
-- [Contributing](#-contributing)
-- [License](#-license)
 - [Acknowledgments](#-acknowledgments)
 
 ## 🌟 Overview
@@ -327,16 +324,6 @@ twigane-kinyarwanda-assistant/
   - Real-time Factor: 0.8x
   - Language Detection: 98.5%
 
-## 📈 Results
-
-### Model Performance Summary
-
-| Model | Metric | Score |
-|-------|--------|-------|
-| Language Understanding | Accuracy | 87.3% |
-| Teaching Generator | BLEU | 0.72 |
-| Whisper ASR | WER | 15.3% |
-| Integrated System | Success Rate | 89.5% |
 
 ### Sample Interactions
 
@@ -380,10 +367,6 @@ Twigane: "Let's learn numbers! Here are the basics:
 - [ ] Optimize for edge deployment
 - [ ] Create API for third-party integration
 
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
 ### Ways to Contribute
 - 🐛 Report bugs and issues
 - 💡 Suggest new features
@@ -391,10 +374,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - 🔧 Submit pull requests
 - 🗣️ Contribute voice recordings
 - 🌍 Help with translations
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
