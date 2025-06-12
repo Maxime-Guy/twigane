@@ -5,11 +5,20 @@
     "average_difficulty": 2.0
   },
   "teaching_generator": {
-    "status": "error",
-    "error": "Placeholder storage has not been allocated on MPS device!"
+    "status": "evaluated",
+    "test_prompts": 4,
+    "average_response_length": 11.25,
+    "responses_generated": 4
   },
   "integrated_system": {
-    "status": "error",
-    "error": "name 'chatbot' is not defined"
+    "status": "evaluated",
+    "success_rate": 1.0,
+    "avg_processing_time": 0.14854449033737183,
+    "total_tests": 4
+  },
+  "audio_processing": {
+    "status": "evaluated",
+    "whisper_available": true,
+    "audio_files_tested": 3
   }
 }

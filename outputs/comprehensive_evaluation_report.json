@@ -1,0 +1,11 @@
+{
+  "system_performance": {
+    "success_rate": 1.0,
+    "avg_response_time": 1.0013580322265625e-06,
+    "response_time_std": 8.035802624870644e-07,
+    "avg_satisfaction": 0.6305,
+    "task_completion_rate": 0.4,
+    "error_rate": 0.0,
+    "throughput": 998643.8095238095
+  }
+}

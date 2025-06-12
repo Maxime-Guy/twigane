@@ -1,0 +1,17 @@
+Category,Query,Response,Response_Length,Response_Time,Status
+Basic Greetings,Hello,"in from the moon. For example, 'hello' in Kinyarwanda is 'Muraho'.",11,2.364s,✅ Success
+Basic Greetings,"Hi, I want to learn Kinyarwanda",Muraho! Welcome to learning Kinyarwanda. I'm here to help you learn. How can I assist you today?,17,0.365s,✅ Success
+Basic Greetings,Good morning,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.821s,✅ Success
+Basic Greetings,How are you?,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.063s,✅ Success
+Common Phrases,How do you say thank you in Kinyarwanda?,"To say 'thank you' in Kinyarwanda, you say 'Murakoze' (moo-rah-koh-zay). You're welcome - 'Nemerewe'...",14,0.093s,✅ Success
+Common Phrases,What does 'Muraho' mean?,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.068s,✅ Success
+Common Phrases,How do I say goodbye?,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.122s,✅ Success
+Common Phrases,Teach me how to say please,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.074s,✅ Success
+Numbers & Counting,Teach me numbers in Kinyarwanda,"Let's learn numbers: rimwe (1), kabiri (2), gatatu (3), kane (4), gatanu (5). Would you like to lear...",19,0.173s,✅ Success
+Numbers & Counting,How do I count from 1 to 10?,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.062s,✅ Success
+Numbers & Counting,What is 5 in Kinyarwanda?,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.040s,✅ Success
+Numbers & Counting,Can you teach me basic numbers?,"Let's learn numbers: rimwe (1), kabiri (2), gatatu (3), kane (4), gatanu (5). Would you like to lear...",19,0.040s,✅ Success
+Introductions,How do I introduce myself?,"To introduce yourself, say 'Nitwa [your name]' which means 'My name is [your name]'. For example: 'N...",18,0.042s,✅ Success
+Introductions,How do I say 'my name is John'?,How do I say'my name is John'??,7,0.075s,✅ Success
+Introductions,Teach me self-introduction phrases,"I'd be happy to help you learn Kinyarwanda. You can ask me about greetings, numbers, common phrases,...",21,0.038s,✅ Success
+Introductions,What's the proper way to introduce someone?,"To introduce yourself, say 'Nitwa [your name]' which means 'My name is [your name]'. For example: 'N...",18,0.040s,✅ Success

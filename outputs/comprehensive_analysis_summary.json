@@ -1,5 +1,5 @@
 {
-  "analysis_date": "2025-06-10T14:07:03.246797",
+  "analysis_date": "2025-06-11T21:56:00.505514",
   "dataset_overview": {
     "total_samples": 46,
     "text_features": 10,
@@ -12,7 +12,7 @@
       "total_samples": 46
     },
     "audio_quality": {
-      "optimal_duration_ratio": 0.9333333333333333,
+      "optimal_duration_ratio": 1.0,
       "sample_rate_consistency": 1,
       "total_audio_samples": 15
     }
@@ -25,9 +25,9 @@
     "max_sentence_length": 20
   },
   "audio_analysis": {
-    "avg_duration": 4.082409674981103,
-    "min_duration": 2.3760090702947845,
-    "max_duration": 10.08,
+    "avg_duration": 3.3864157218442927,
+    "min_duration": 2.088027210884354,
+    "max_duration": 5.6880272108843535,
     "sample_rates": [
       22050
     ]
