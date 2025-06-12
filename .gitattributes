@@ -1,2 +1,1 @@
 dataset/cv-corpus-21.0-delta-2025-03-14/rw/validated_sentences.tsv filter=lfs diff=lfs merge=lfs -text
-models/*.pth filter=lfs diff=lfs merge=lfs -text
