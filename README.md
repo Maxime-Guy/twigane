@@ -317,16 +317,16 @@ Twigane: "Let's learn numbers! Here are the basics:
          Try counting along with me!"
 ```
 
-### Training Metrics
+### Audio Analysis
 
-![Training Performance](outputs/training_metrics.png)
+![Audio Metrics](outputs/audio_analysis.png)
 
 ## 🚀 Future Improvements
 
 ### Short-term Goals
 - [x] Add more audio data (target: 10+ hours)
 - [x] Implement voice synthesis for pronunciation examples
-- [ ] Create mobile app interface
+- [ ] Integrate WhatsApp Deployment
 - [ ] Add progress tracking and gamification
 
 ### Long-term Vision
@@ -337,17 +337,11 @@ Twigane: "Let's learn numbers! Here are the basics:
 
 ### Technical Enhancements
 - [ ] Implement reinforcement learning from user feedback
-- [ ] Add multilingual support (10+ interface languages)
+- [ ] Use Online GPUs for effective implementation.
 - [ ] Optimize for edge deployment
 - [ ] Create API for third-party integration
 
-### Ways to Contribute
-- 🐛 Report bugs and issues
-- 💡 Suggest new features
-- 📝 Improve documentation
-- 🔧 Submit pull requests
-- 🗣️ Contribute voice recordings
-- 🌍 Help with translations
+
 
 ## 🙏 Acknowledgments
 
