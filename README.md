@@ -193,55 +193,9 @@ Age Distribution:
 
 ## 💻 Usage
 
-### Quick Start
-
-```python
-# Initialize the chatbot
-from twigane import TwiganeIntegratedBot
-
-bot = TwiganeIntegratedBot()
-
-# Text interaction
-response = bot.process_user_input("How do you say hello in Kinyarwanda?")
-print(response['response'])
-
-# Audio interaction
-response = bot.process_user_input(audio_file="greeting.wav")
-print(f"Transcription: {response['audio_transcription']}")
-print(f"Response: {response['response']}")
-```
-
 ### Running the Full Pipeline
 
-1. **Execute the Jupyter notebook** `kinyarwanda_assistant_full.ipynb`
-2. **Or run individual components**:
-   ```python
-   # Train Language Understanding Model
-   python train_language_understanding.py
-   
-   # Train Teaching Generator
-   python train_teaching_generator.py
-   
-   # Fine-tune Whisper
-   python train_whisper.py
-   
-   # Run integrated chatbot
-   python run_chatbot.py
-   ```
-
-### Interactive Demo
-
-```python
-# Start interactive session
-python interactive_demo.py
-
-# Example conversation:
-> User: I want to learn Kinyarwanda
-> Twigane: Great! Let's start with basic greetings. "Muraho" (Moo-rah-ho) means "hello"...
-
-> User: How do I count to 5?
-> Twigane: Let's learn numbers! 1 is "rimwe", 2 is "kabiri", 3 is "gatatu"...
-```
+. **Execute the Jupyter notebook** `twigane_notebook.ipynb`
 
 ## 📁 Project Structure
 
