@@ -1,1 +1,4 @@
 models/*.pth
+models/*.safetensors
+model_cache/
+*.DS_Store
