@@ -4,8 +4,6 @@
   <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/PyTorch-2.0+-red.svg" alt="PyTorch">
   <img src="https://img.shields.io/badge/Transformers-4.30+-yellow.svg" alt="Transformers">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
-  <img src="https://img.shields.io/badge/Status-Active-success.svg" alt="Status">
 </div>
 
 <div align="center">
