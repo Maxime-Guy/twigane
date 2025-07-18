@@ -1,0 +1,171 @@
+.features {
+  background: #f9fafb;
+  padding: 5rem 0;
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  font-size: 1.25rem;
+  color: #6b7280;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.text-generation-icon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.text-to-speech-icon {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.icon-letter {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.speaker-icon {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.speaker-body {
+  width: 20px;
+  height: 15px;
+  background: #ffffff;
+  border-radius: 3px 0 0 3px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.speaker-cone {
+  width: 0;
+  height: 0;
+  border-left: 15px solid #ffffff;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sound-waves {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.wave {
+  position: absolute;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  border-left: transparent;
+  border-bottom: transparent;
+}
+
+.wave1 {
+  width: 8px;
+  height: 8px;
+  right: 0;
+  top: -4px;
+}
+
+.wave2 {
+  width: 12px;
+  height: 12px;
+  right: -2px;
+  top: -6px;
+}
+
+.wave3 {
+  width: 16px;
+  height: 16px;
+  right: -4px;
+  top: -8px;
+}
+
+.feature-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.feature-description {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .section-description {
+    font-size: 1.125rem;
+  }
+  
+  .feature-card {
+    padding: 1.5rem;
+  }
+} 
