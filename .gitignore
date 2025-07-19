@@ -1,0 +1,4 @@
+datasets/cv-corpus-21.0-delta-2025-03-14/rw/validated_sentences.tsv
+notebooks/*.pt
+pretrained_models/
+models/
