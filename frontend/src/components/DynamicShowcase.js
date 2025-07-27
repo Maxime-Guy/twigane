@@ -183,7 +183,7 @@ const DynamicShowcase = () => {
           <div className="feature-highlight">
             <div className="feature-icon">📱</div>
             <h4>Learn Anywhere</h4>
-            <p>Web, mobile, or WhatsApp - your choice</p>
+            <p>Web, mobile, or your choice</p>
           </div>
           <div className="feature-highlight">
             <div className="feature-icon">🏆</div>

@@ -399,19 +399,6 @@
   color: white;
 }
 
-.social-link.whatsapp {
-  background: rgba(37, 211, 102, 0.1);
-  color: #25d366;
-}
-
-.social-link.whatsapp:hover::before {
-  background: #25d366;
-}
-
-.social-link.whatsapp:hover {
-  color: white;
-}
-
 
 
 /* Footer Bottom */

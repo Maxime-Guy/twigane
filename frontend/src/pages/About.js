@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './About.css';
 
 const About = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log('Form submitted:', formData);
+    alert('Thank you for your message! We will get back to you soon.');
+    setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
   return (
     <div className="about-page">
       <div className="about-container">
@@ -88,6 +110,120 @@ const About = () => {
               <li>Text-to-speech synthesis for pronunciation practice</li>
               <li>Responsive web design for seamless user experience</li>
             </ul>
+          </div>
+
+          <div className="about-section contact-section">
+            <h2>Contact Us</h2>
+            <p>Have questions or feedback? We'd love to hear from you!</p>
+            
+            <div className="contact-content">
+              <div className="contact-info">
+                <div className="contact-methods">
+                  <div className="contact-method">
+                    <div className="contact-icon">📧</div>
+                    <div className="contact-details">
+                      <h3>Email</h3>
+                      <p>support@twigane.com</p>
+                    </div>
+                  </div>
+
+                  <div className="contact-method">
+                    <div className="contact-icon">🌐</div>
+                    <div className="contact-details">
+                      <h3>Website</h3>
+                      <p>www.twigane.com</p>
+                    </div>
+                  </div>
+
+                  <div className="contact-method">
+                    <div className="contact-icon">📱</div>
+                    <div className="contact-details">
+                      <h3>Support</h3>
+                      <p>Available 24/7 through our chat system</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="faq-section">
+                  <h3>Quick Questions?</h3>
+                  <div className="faq-item">
+                    <strong>Q: Is Twigane free to use?</strong>
+                    <p>Yes! Twigane is completely free for all users.</p>
+                  </div>
+                  <div className="faq-item">
+                    <strong>Q: Do I need to create an account?</strong>
+                    <p>You can start using Twigane immediately, but creating an account unlocks progress tracking and personalized features.</p>
+                  </div>
+                  <div className="faq-item">
+                    <strong>Q: Can I use Twigane offline?</strong>
+                    <p>Currently, Twigane requires an internet connection to function.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="contact-form-container">
+                <h3>Send us a Message</h3>
+                <form className="contact-form" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="subject">Subject</label>
+                    <select
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select a subject</option>
+                      <option value="general">General Inquiry</option>
+                      <option value="support">Technical Support</option>
+                      <option value="feedback">Feedback</option>
+                      <option value="bug">Bug Report</option>
+                      <option value="feature">Feature Request</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="message">Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows="5"
+                      required
+                    ></textarea>
+                  </div>
+
+                  <button type="submit" className="submit-button">
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
 
           <div className="about-section cta-section">

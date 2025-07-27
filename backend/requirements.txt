@@ -1,10 +1,18 @@
 Flask==2.3.3
 Flask-CORS==4.0.0
-torch==2.0.1
+torch>=2.1.0
 numpy==1.24.3
 scikit-learn==1.3.0
 gTTS==2.3.2
 librosa==0.10.1
 soundfile==0.12.1
 requests==2.31.0
-python-dotenv==1.0.0 
+python-dotenv==1.0.0
+transformers>=4.36.2
+sentencepiece==0.1.99
+PyPDF2==3.0.1
+python-docx==0.8.11
+# Hugging Face Hub dependencies
+huggingface_hub>=0.20.0
+accelerate>=0.20.0
+safetensors>=0.3.0 

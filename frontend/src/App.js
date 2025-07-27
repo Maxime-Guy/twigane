@@ -5,27 +5,36 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
+import Translate from './pages/Translate';
+import Quiz from './pages/Quiz';
+import AdminDashboard from './pages/AdminDashboard';
+import LearnerDashboard from './pages/LearnerDashboard';
 import About from './pages/About';
-import Contact from './pages/Contact';
-import WhatsApp from './pages/WhatsApp';
+import Settings from './pages/Settings';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/chat" element={<Chat />} />
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/chat" element={<Chat />} />
+                          <Route path="/translate" element={<Translate />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/dashboard" element={<LearnerDashboard />} />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/whatsapp" element={<WhatsApp />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

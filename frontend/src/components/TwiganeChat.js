@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import './TwiganeChat.css';
 
 const TwiganeChat = () => {
+  const { currentUser } = useAuth();
+
+  // Chat state
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -14,8 +18,11 @@ const TwiganeChat = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [backendStatus, setBackendStatus] = useState({ connected: false, teachingModel: false, ttsSystem: false });
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showLearningTools, setShowLearningTools] = useState(false);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Backend API URL
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
@@ -27,8 +34,21 @@ const TwiganeChat = () => {
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (currentUser) {
+      scrollToBottom();
+    }
+  }, [messages, currentUser]);
+
+  // Auto-focus input when user logs in
+  useEffect(() => {
+    if (currentUser && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 500);
+    }
+  }, [currentUser]);
+
+  // Remove the automatic welcome message useEffect to prevent duplicates
 
   const checkBackendStatus = async () => {
     try {
@@ -60,7 +80,6 @@ const TwiganeChat = () => {
         audioRef.current.pause();
       }
       
-      // Extract filename from path
       const filename = audioPath.split('/').pop();
       const audioUrl = `${API_URL}/audio/${filename}`;
       
@@ -69,7 +88,6 @@ const TwiganeChat = () => {
       
       await audio.play();
       
-      // Add audio status message
       addMessage({
         text: `🎵 Playing audio for pronunciation...`,
         sender: 'bot',
@@ -89,7 +107,7 @@ const TwiganeChat = () => {
   const addMessage = (message) => {
     const newMessage = {
       id: Date.now(),
-      timestamp: new Date().toLocaleTimeString(),
+      timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
       ...message
     };
     setMessages(prev => [...prev, newMessage]);
@@ -102,7 +120,6 @@ const TwiganeChat = () => {
     setInputText('');
     setIsLoading(true);
 
-    // Add user message
     addMessage({
       text: userMessage,
       sender: 'user',
@@ -110,7 +127,6 @@ const TwiganeChat = () => {
     });
 
     try {
-      // Send to backend
       const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: {
@@ -122,7 +138,6 @@ const TwiganeChat = () => {
       if (response.ok) {
         const data = await response.json();
         
-        // Add bot response
         const botMessage = {
           text: data.response,
           sender: 'bot',
@@ -134,9 +149,7 @@ const TwiganeChat = () => {
 
         addMessage(botMessage);
 
-        // Handle pronunciation responses
         if (data.type === 'pronunciation' && data.audio_path) {
-          // Add audio play button
           addMessage({
             text: `🎵 Click to hear "${data.word}" pronounced:`,
             sender: 'bot',
@@ -174,24 +187,73 @@ const TwiganeChat = () => {
     }
   };
 
+  const setQuickQuestion = (question) => {
+    setInputText(question);
+    // Focus the input after setting the question
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        // Move cursor to end
+        inputRef.current.setSelectionRange(question.length, question.length);
+      }
+    }, 100);
+  };
+
   const quickQuestions = [
-    "How do you say hello?",
-    "What does Muraho mean?",
-    'How does "Mwaramutse" sound?',
-    "Teach me basic greetings",
-    'How is "Amakuru" pronounced?',
-    "What is good morning in Kinyarwanda?"
+    // Conversation/Greetings - from dataset
+    "How do you say 'Good morning' in Kinyarwanda?",
+    "How do you greet someone you haven't seen for a long time?",
+    
+    // Vocabulary - from dataset
+    "What does Amakuru mean?",
+    "How do you say 'Yes' and 'No' in Kinyarwanda?",
+    
+    // Grammar - from dataset
+    "Explain Class 1 noun prefixes in Kinyarwanda",
+    "How do possessive adjectives work in Kinyarwanda?",
+    
+    // Pronunciation - will trigger TTS system
+    'How does "Muraho" sound?',
+    'Can you pronounce "Mwaramutse"?',
+    
+    // Numbers - from dataset
+    "Count from 1 to 10 in Kinyarwanda",
+    "How do you say 'three books' in Kinyarwanda?",
+    
+    // Family/People - from dataset
+    "What is the singular and plural of 'child' in Kinyarwanda?",
+    "How do you say 'my child' in Kinyarwanda?",
+    
+    // Translation - will trigger translation model
+    "Translate to Kinyarwanda: The man is working",
+    "How do you say 'I want water' in Kinyarwanda?",
+    
+    // Culture - from dataset
+    "What is a common Kinyarwanda proverb about patience?",
+    "How do you show respect in Kinyarwanda?",
+    
+    // Daily phrases - from dataset
+    "How do you say 'Thank you very much' in Kinyarwanda?",
+    "What does 'Murakoze cyane' mean?"
+  ];
+
+  const learningTools = [
+    { icon: "🔊", label: "Pronunciation", action: () => setQuickQuestion('How does "Murakoze" sound?') },
+    { icon: "📚", label: "Grammar", action: () => setQuickQuestion("Explain Class 2 noun prefixes in Kinyarwanda") },
+    { icon: "💬", label: "Phrases", action: () => setQuickQuestion("How do you say 'I like to read books' in Kinyarwanda?") },
+    { icon: "🔤", label: "Vocabulary", action: () => setQuickQuestion("What is the singular and plural of 'teacher' in Kinyarwanda?") },
+    { icon: "🎯", label: "Quiz", action: () => setQuickQuestion("Fill in the blank: '___ arakora.' (He is working)") },
   ];
 
   const renderMessage = (message) => {
     const isUser = message.sender === 'user';
+    const isWelcome = message.isWelcome;
     
     return (
       <div key={message.id} className={`message ${isUser ? 'user' : 'bot'}`}>
-        <div className="message-content">
+        <div className={`message-bubble ${isWelcome ? 'welcome' : ''}`}>
           <div className="message-text">{message.text}</div>
           
-          {/* Audio button for pronunciation */}
           {message.type === 'audio-button' && (
             <div className="audio-controls">
               <button 
@@ -206,7 +268,6 @@ const TwiganeChat = () => {
             </div>
           )}
           
-          {/* Message metadata */}
           {message.category && (
             <div className="message-meta">
               <span className="category">{message.category}</span>
@@ -227,93 +288,161 @@ const TwiganeChat = () => {
     );
   };
 
-  return (
-    <div className="twigane-chat">
-      {/* Header */}
-      <div className="chat-header">
-        <div className="header-title">
-          <h2>🇷🇼 Twigane - Kinyarwanda Teacher</h2>
-          <div className="status-indicators">
-            <span className={`status ${backendStatus.connected ? 'connected' : 'disconnected'}`}>
-              {backendStatus.connected ? '🟢' : '🔴'} Server
-            </span>
-            <span className={`status ${backendStatus.teachingModel ? 'active' : 'inactive'}`}>
-              {backendStatus.teachingModel ? '🧠' : '❌'} Teaching
-            </span>
-            <span className={`status ${backendStatus.ttsSystem ? 'active' : 'inactive'}`}>
-              {backendStatus.ttsSystem ? '🎵' : '❌'} Audio
-            </span>
-          </div>
-        </div>
-        
-        {backendStatus.availableWords && (
-          <div className="audio-stats">
-            {backendStatus.availableWords} words with audio available
-          </div>
-        )}
-      </div>
-
-      {/* Messages */}
-      <div className="chat-messages">
-        {messages.map(renderMessage)}
-        
-        {isLoading && (
-          <div className="message bot loading">
-            <div className="message-content">
-              <div className="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
+  // Show authentication required message if not logged in
+  if (!currentUser) {
+    return (
+      <div className="modern-chat-container">
+        <div className="auth-required">
+          <div className="auth-content">
+            <div className="auth-icon">🇷🇼</div>
+            <h2>Welcome to Twigane</h2>
+            <p>Sign in to start learning Kinyarwanda with your AI teacher!</p>
+            <div className="auth-features">
+              <div className="feature">
+                <span className="feature-icon">💬</span>
+                <span>Interactive conversations</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">🔊</span>
+                <span>Pronunciation help</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">📚</span>
+                <span>Grammar lessons</span>
               </div>
             </div>
           </div>
-        )}
-        
-        <div ref={messagesEndRef} />
+        </div>
       </div>
+    );
+  }
 
-      {/* Quick Questions */}
-      <div className="quick-questions">
-        <div className="quick-title">💡 Try asking:</div>
-        <div className="quick-buttons">
-          {quickQuestions.map((question, index) => (
-            <button
-              key={index}
-              className="quick-btn"
-              onClick={() => setInputText(question)}
-              disabled={isLoading}
-            >
-              {question}
-            </button>
-          ))}
+  // Main modern chat UI
+  return (
+    <div className="modern-chat-container">
+      {/* Minimal Header */}
+      <div className="modern-header">
+        <div className="header-left">
+          <div className="brand">
+            <span className="brand-icon">🇷🇼</span>
+            <span className="brand-name">Twigane</span>
+          </div>
+          <div className="status-indicator">
+            <span className={`status-dot ${backendStatus.connected ? 'online' : 'offline'}`}></span>
+            <span className="status-text">
+              {backendStatus.connected ? 'Active' : 'Disconnected'}
+            </span>
+          </div>
+        </div>
+        <div className="header-right">
+          <button 
+            className="toolbar-toggle"
+            onClick={() => setShowLearningTools(!showLearningTools)}
+            title="Learning Tools"
+          >
+            🛠️
+          </button>
+          <button 
+            className="sidebar-toggle"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            title="Toggle Suggestions"
+          >
+            {sidebarCollapsed ? '▶️' : '◀️'}
+          </button>
         </div>
       </div>
 
-      {/* Input */}
-      <div className="chat-input">
+      <div className="chat-body">
+        {/* Messages Area */}
+        <div className="messages-container">
+          <div className="messages-area">
+            {messages.map(renderMessage)}
+            {isLoading && (
+              <div className="message bot">
+                <div className="message-bubble loading">
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Learning Tools Floating Panel */}
+          {showLearningTools && (
+            <div className="learning-tools-panel">
+              <div className="tools-header">
+                <span>Learning Tools</span>
+                <button onClick={() => setShowLearningTools(false)}>✖️</button>
+              </div>
+              <div className="tools-grid">
+                {learningTools.map((tool, index) => (
+                  <button 
+                    key={index}
+                    className="tool-btn"
+                    onClick={tool.action}
+                  >
+                    <span className="tool-icon">{tool.icon}</span>
+                    <span className="tool-label">{tool.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Collapsible Sidebar */}
+        {!sidebarCollapsed && (
+          <div className="suggestions-sidebar">
+            <div className="sidebar-header">
+              <h3>Quick Start</h3>
+              <p>Try these questions:</p>
+            </div>
+            <div className="suggestions-list">
+              {quickQuestions.map((question, index) => (
+                <button
+                  key={index}
+                  className="suggestion-btn"
+                  onClick={() => setQuickQuestion(question)}
+                  disabled={isLoading || !backendStatus.connected}
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Fixed Input Bar */}
+      <div className="input-bar">
+        {!backendStatus.connected && (
+          <div className="connection-warning">
+            ⚠️ Connection lost. Please refresh to reconnect.
+          </div>
+        )}
         <div className="input-container">
           <textarea
+            ref={inputRef}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Ask me about Kinyarwanda or request pronunciation help..."
             disabled={isLoading || !backendStatus.connected}
-            rows="2"
+            rows="1"
+            className="message-input"
           />
-          <button
-            onClick={sendMessage}
+          <button 
+            onClick={sendMessage} 
             disabled={isLoading || !inputText.trim() || !backendStatus.connected}
-            className="send-btn"
+            className="send-button"
           >
-            {isLoading ? '⏳' : '📤'}
+            {isLoading ? '⏳' : '➤'}
           </button>
         </div>
-        
-        {!backendStatus.connected && (
-          <div className="connection-error">
-            ❌ Backend not connected. Please make sure the server is running.
-          </div>
-        )}
       </div>
     </div>
   );

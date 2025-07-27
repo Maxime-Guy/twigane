@@ -218,6 +218,20 @@
   color: #1f2937;
 }
 
+.nav-link.admin-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.nav-link.admin-link:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
 .start-chat-btn {
   background: #8b5cf6;
   color: white;
@@ -237,6 +251,303 @@
   background: #7c3aed;
 }
 
+/* Authentication Styles in Header */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.welcome-user {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.signin-btn {
+  background: transparent;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.signin-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.signup-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.logout-btn {
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+/* Authentication Modal */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.auth-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.auth-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.auth-modal-header h2 {
+  color: #2c3e50;
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 2em;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.close-modal-btn:hover {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.auth-tabs {
+  display: flex;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 25px;
+  padding: 4px;
+  margin-bottom: 30px;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  color: #667eea;
+}
+
+.auth-tab.active {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.auth-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 25px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  background: white;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.auth-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 0.9em;
+  border: 1px solid #f5c6cb;
+}
+
+/* Google Sign-In Styles */
+.google-auth-section {
+  margin-bottom: 20px;
+}
+
+.google-signin-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: white;
+  border: 2px solid #dadce0;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #3c4043;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-signin-btn:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #c1c7cd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.google-signin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-icon {
+  flex-shrink: 0;
+}
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 25px 0;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.auth-divider span {
+  background: white;
+  padding: 0 20px;
+  color: #666;
+  font-size: 0.9em;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+/* Update existing auth-submit-btn for better distinction */
+.auth-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive Design for Header Auth */
 @media (max-width: 768px) {
   .header-container {
     padding: 0 1rem;
@@ -279,4 +590,73 @@
   .logo-container::before {
     display: none; /* Hide glow effect on mobile for performance */
   }
+
+  .auth-modal {
+    padding: 30px 20px;
+    margin: 20px;
+  }
+  
+  .auth-modal-header h2 {
+    font-size: 1.5em;
+  }
+  
+  .auth-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .auth-btn {
+    padding: 8px 16px;
+    font-size: 0.85em;
+  }
+  
+  .welcome-user {
+    font-size: 0.8em;
+  }
+} 
+
+/* Responsive Design for Google Auth */
+@media (max-width: 768px) {
+  .google-signin-btn {
+    padding: 14px 16px;
+    font-size: 0.9em;
+  }
+  
+  .google-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .auth-divider {
+    margin: 20px 0;
+  }
+} 
+
+/* Firebase Error Banner */
+.firebase-error-banner {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 0.9em;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.firebase-error-banner strong {
+  font-weight: 700;
+}
+
+/* Disabled button states */
+.auth-btn.disabled,
+.auth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.auth-btn.disabled:hover,
+.auth-btn:disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
 } 
