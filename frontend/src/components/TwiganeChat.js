@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './TwiganeChat.css';
 
@@ -27,30 +27,7 @@ const TwiganeChat = () => {
   // Backend API URL
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
-  // Check backend status on component mount
-  useEffect(() => {
-    checkBackendStatus();
-  }, []);
-
-  // Auto-scroll to bottom when new messages are added
-  useEffect(() => {
-    if (currentUser) {
-      scrollToBottom();
-    }
-  }, [messages, currentUser]);
-
-  // Auto-focus input when user logs in
-  useEffect(() => {
-    if (currentUser && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current.focus();
-      }, 500);
-    }
-  }, [currentUser]);
-
-  // Remove the automatic welcome message useEffect to prevent duplicates
-
-  const checkBackendStatus = async () => {
+  const checkBackendStatus = useCallback(async () => {
     try {
       const response = await fetch(`${API_URL}/health`);
       if (response.ok) {
@@ -68,7 +45,28 @@ const TwiganeChat = () => {
       console.error('Backend connection error:', error);
       setBackendStatus({ connected: false, teachingModel: false, ttsSystem: false });
     }
-  };
+  }, [API_URL]);
+
+  // Check backend status on component mount
+  useEffect(() => {
+    checkBackendStatus();
+  }, [checkBackendStatus]);
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    if (currentUser) {
+      scrollToBottom();
+    }
+  }, [messages, currentUser]);
+
+  // Auto-focus input when user logs in
+  useEffect(() => {
+    if (currentUser && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current.focus();
+      }, 500);
+    }
+  }, [currentUser]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

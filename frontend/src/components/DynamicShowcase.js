@@ -3,9 +3,9 @@ import './DynamicShowcase.css';
 
 const DynamicShowcase = () => {
   const [activeVocabIndex, setActiveVocabIndex] = useState(0);
-  const [learnerCount, setLearnerCount] = useState(0);
-  const [wordsLearned, setWordsLearned] = useState(0);
-  const [conversationsCount, setConversationsCount] = useState(0);
+  const [learnerCount] = useState(1247); // Fixed value for demo
+  const [wordsLearned] = useState(15420); // Fixed value for demo
+  const [conversationsCount] = useState(8930); // Fixed value for demo
   const [currentDemo, setCurrentDemo] = useState(0);
 
   const vocabularyWords = [

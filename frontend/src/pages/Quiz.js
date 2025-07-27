@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import './Quiz.css';
 
@@ -24,12 +24,68 @@ const Quiz = () => {
   // API configuration
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
+  const loadCategories = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}/quiz/categories`);
+      const data = await response.json();
+      
+      if (response.ok) {
+        setCategories(['mixed', ...data.categories]);
+      } else {
+        setError('Failed to load quiz categories');
+      }
+    } catch (err) {
+      setError('Failed to connect to quiz service');
+    }
+  }, [API_URL]);
+
+  const handleQuizSubmit = useCallback(async (finalAnswers = null) => {
+    setLoading(true);
+    
+    const answersToSubmit = finalAnswers || userAnswers;
+    const timeTaken = quizStartTime ? Math.floor((Date.now() - quizStartTime) / 1000) : 0;
+    
+    try {
+      const response = await fetch(`${API_URL}/quiz/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_questions: currentQuiz.questions,
+          user_answers: answersToSubmit
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setQuizResults({
+          ...data,
+          time_taken: timeTaken,
+          quiz_info: {
+            category: currentQuiz.category,
+            difficulty: currentQuiz.difficulty,
+            total_questions: currentQuiz.total_questions
+          }
+        });
+        setQuizState('results');
+      } else {
+        setError(data.error || 'Failed to submit quiz');
+      }
+    } catch (err) {
+      setError('Failed to submit quiz');
+    } finally {
+      setLoading(false);
+    }
+  }, [userAnswers, currentQuiz, quizStartTime, API_URL]);
+
   // Load categories on component mount
   useEffect(() => {
     if (currentUser) {
       loadCategories();
     }
-  }, [currentUser]);
+  }, [currentUser, loadCategories]);
 
   // Timer effect
   useEffect(() => {
@@ -46,22 +102,7 @@ const Quiz = () => {
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [quizState, timeLeft]);
-
-  const loadCategories = async () => {
-    try {
-      const response = await fetch(`${API_URL}/quiz/categories`);
-      const data = await response.json();
-      
-      if (response.ok) {
-        setCategories(['mixed', ...data.categories]);
-      } else {
-        setError('Failed to load quiz categories');
-      }
-    } catch (err) {
-      setError('Failed to connect to quiz service');
-    }
-  };
+  }, [quizState, timeLeft, handleQuizSubmit]);
 
   const startQuiz = async () => {
     setLoading(true);
@@ -129,47 +170,6 @@ const Quiz = () => {
       
       setCurrentQuestionIndex(currentQuestionIndex - 1);
       setSelectedAnswer(userAnswers[currentQuestionIndex - 1] !== -1 ? userAnswers[currentQuestionIndex - 1] : null);
-    }
-  };
-
-  const handleQuizSubmit = async (finalAnswers = null) => {
-    setLoading(true);
-    
-    const answersToSubmit = finalAnswers || userAnswers;
-    const timeTaken = quizStartTime ? Math.floor((Date.now() - quizStartTime) / 1000) : 0;
-    
-    try {
-      const response = await fetch(`${API_URL}/quiz/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quiz_questions: currentQuiz.questions,
-          user_answers: answersToSubmit
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setQuizResults({
-          ...data,
-          time_taken: timeTaken,
-          quiz_info: {
-            category: currentQuiz.category,
-            difficulty: currentQuiz.difficulty,
-            total_questions: currentQuiz.total_questions
-          }
-        });
-        setQuizState('results');
-      } else {
-        setError(data.error || 'Failed to submit quiz');
-      }
-    } catch (err) {
-      setError('Failed to submit quiz');
-    } finally {
-      setLoading(false);
     }
   };
 
