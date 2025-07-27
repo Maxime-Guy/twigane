@@ -2,3 +2,16 @@ datasets/cv-corpus-21.0-delta-2025-03-14/rw/validated_sentences.tsv
 notebooks/*.pt
 pretrained_models/
 models/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment files
+.env
+.env.local
+
+# macOS
+.DS_Store
