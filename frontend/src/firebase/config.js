@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 // Validate that all required environment variables are present
 const requiredEnvVars = [
@@ -32,15 +33,22 @@ const firebaseConfig = {
 // Initialize Firebase only if we have valid config
 let app;
 let auth;
+let db;
 
 try {
   if (firebaseConfig.apiKey && firebaseConfig.apiKey !== 'your-api-key-here') {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
+    db = getFirestore(app);
     
-    // Connect to Firebase Auth emulator in development (optional)
-    if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_USE_AUTH_EMULATOR === 'true') {
-      connectAuthEmulator(auth, 'http://localhost:9099');
+    // Connect to emulators in development (optional)
+    if (process.env.NODE_ENV === 'development') {
+      if (process.env.REACT_APP_USE_AUTH_EMULATOR === 'true') {
+        connectAuthEmulator(auth, 'http://localhost:9099');
+      }
+      if (process.env.REACT_APP_USE_FIRESTORE_EMULATOR === 'true') {
+        connectFirestoreEmulator(db, 'localhost', 8080);
+      }
     }
     
     console.log('✅ Firebase initialized successfully');
@@ -51,5 +59,5 @@ try {
   console.error('❌ Firebase initialization failed:', error);
 }
 
-export { auth };
+export { auth, db };
 export default app; 

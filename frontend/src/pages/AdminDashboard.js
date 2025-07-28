@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import analyticsService from '../services/analyticsService';
 import './AdminDashboard.css';
 
 const ADMIN_EMAIL = "guymaximebakunzi@gmail.com";
@@ -18,8 +19,27 @@ const AdminDashboard = () => {
   const fetchAdminData = useCallback(async () => {
     try {
       setLoading(true);
+      setError('');
       
-      // Fetch analytics data
+      // Try Firebase analytics service first
+      try {
+        console.log('Fetching admin data from Firebase Analytics');
+        const [analyticsData, usersData] = await Promise.all([
+          analyticsService.getAdminAnalytics(),
+          analyticsService.getAllUsersForAdmin()
+        ]);
+        
+        if (analyticsData && Object.keys(analyticsData).length > 0) {
+          console.log('Successfully loaded Firebase admin analytics');
+          setAnalytics(analyticsData);
+          setUsers(usersData || []);
+          return;
+        }
+      } catch (firebaseErr) {
+        console.warn('Firebase analytics unavailable, falling back to backend API:', firebaseErr);
+      }
+      
+      // Fallback to backend API
       const analyticsResponse = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5001'}/admin/analytics`, {
         method: 'GET',
         headers: {

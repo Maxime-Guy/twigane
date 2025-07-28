@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { isAdmin, shouldShowLearnerFeatures, shouldShowAdminFeatures, getWelcomeMessage } from '../utils/adminUtils';
 import './Header.css';
 
 const Header = () => {
@@ -118,21 +119,30 @@ const Header = () => {
             </Link>
           </div>
           <nav className="nav">
-            <Link to="/chat" className="nav-link">Chat</Link>
-                          <Link to="/translate" className="nav-link">Translate</Link>
-                              <Link to="/quiz" className="nav-link">Quiz</Link>
-                <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                {currentUser?.email === 'guymaximebakunzi@gmail.com' && (
-                  <Link to="/admin" className="nav-link admin-link">Admin</Link>
-                )}
+            {/* Admin-only navigation */}
+            {shouldShowAdminFeatures(currentUser) ? (
+              <>
+                <Link to="/admin" className="nav-link admin-link">Admin Dashboard</Link>
                 <Link to="/about" className="nav-link">About</Link>
-            <Link to="/settings" className="nav-link">Settings</Link>
+                <Link to="/settings" className="nav-link">Settings</Link>
+              </>
+            ) : (
+              /* Learner navigation */
+              <>
+                <Link to="/chat" className="nav-link">Chat</Link>
+                <Link to="/translate" className="nav-link">Translate</Link>
+                <Link to="/quiz" className="nav-link">Quiz</Link>
+                <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                <Link to="/about" className="nav-link">About</Link>
+                <Link to="/settings" className="nav-link">Settings</Link>
+              </>
+            )}
           </nav>
           <div className="header-actions">
             {currentUser ? (
               <div className="user-menu">
                 <span className="welcome-user">
-                  Welcome, {currentUser.displayName || currentUser.email}!
+                  {getWelcomeMessage(currentUser)}!
                 </span>
                 <button onClick={handleLogout} className="logout-btn">
                   Logout

@@ -69,11 +69,11 @@ const Footer = () => {
           <div className="footer-section">
             <h4 className="footer-title">Support</h4>
             <ul className="footer-links">
-              <li><Link to="/about" className="footer-link">Help Center</Link></li>
-              <li><Link to="/about" className="footer-link">FAQ</Link></li>
-              <li><Link to="/settings" className="footer-link">Privacy Policy</Link></li>
-              <li><Link to="/about" className="footer-link">Terms of Service</Link></li>
-              <li><Link to="/about" className="footer-link">Feedback</Link></li>
+              <li><Link to="/help-center" className="footer-link">Help Center</Link></li>
+              <li><Link to="/faq" className="footer-link">FAQ</Link></li>
+              <li><Link to="/privacy-policy" className="footer-link">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="footer-link">Terms of Service</Link></li>
+              <li><Link to="/feedback" className="footer-link">Feedback</Link></li>
             </ul>
           </div>
 
@@ -115,10 +115,10 @@ const Footer = () => {
               <p>Made with ❤️ in Rwanda for language learners worldwide.</p>
             </div>
             <div className="footer-bottom-links">
-              <Link to="/settings" className="footer-bottom-link">Privacy</Link>
-              <Link to="/about" className="footer-bottom-link">Terms</Link>
-              <Link to="/settings" className="footer-bottom-link">Cookies</Link>
-              <Link to="/about" className="footer-bottom-link">Accessibility</Link>
+              <Link to="/privacy-policy" className="footer-bottom-link">Privacy</Link>
+              <Link to="/terms-of-service" className="footer-bottom-link">Terms</Link>
+              <Link to="/privacy-policy" className="footer-bottom-link">Cookies</Link>
+              <Link to="/help-center" className="footer-bottom-link">Accessibility</Link>
             </div>
           </div>
         </div>

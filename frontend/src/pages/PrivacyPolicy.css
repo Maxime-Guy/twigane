@@ -1,0 +1,300 @@
+.privacy-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 20px 40px;
+}
+
+.privacy-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.privacy-header {
+  text-align: center;
+  margin-bottom: 50px;
+  color: white;
+}
+
+.privacy-header h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.privacy-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.last-updated {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.last-updated span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.privacy-content {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.privacy-section {
+  margin-bottom: 50px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e0e6ff;
+}
+
+.privacy-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.privacy-section h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.rights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.right-item {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+}
+
+.right-item h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.right-item p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.info-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.info-type {
+  background: #f8f9ff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #e0e6ff;
+}
+
+.info-type h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.info-type ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.info-type li {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.usage-list {
+  space-y: 20px;
+}
+
+.usage-item {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-left: 4px solid #667eea;
+}
+
+.usage-item h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.usage-item p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.protection-measures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.measure {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #e0e6ff;
+}
+
+.measure h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.measure p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.sharing-policy {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.sharing-item {
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.no-sharing {
+  background: #fff5f5;
+  border: 2px solid #fed7d7;
+}
+
+.limited-sharing {
+  background: #fffaf0;
+  border: 2px solid #fbd38d;
+}
+
+.sharing-item h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.sharing-item ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.sharing-item li {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.cookies-info {
+  background: #f8f9ff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #e0e6ff;
+}
+
+.cookies-info p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.cookies-info ul {
+  margin: 15px 0;
+  padding-left: 20px;
+}
+
+.cookies-info li {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.children-policy {
+  background: #f0f8ff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #bee3f8;
+}
+
+.children-policy p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.contact-privacy {
+  background: #f8f9ff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #e0e6ff;
+}
+
+.contact-privacy p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.contact-details p {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+}
+
+.updates-policy {
+  background: #f8f9ff;
+  padding: 25px;
+  border-radius: 12px;
+  border: 2px solid #e0e6ff;
+}
+
+.updates-policy p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .privacy-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .privacy-content {
+    padding: 25px;
+  }
+  
+  .rights-grid,
+  .info-types,
+  .protection-measures,
+  .sharing-policy {
+    grid-template-columns: 1fr;
+  }
+  
+  .privacy-section h2 {
+    font-size: 1.5rem;
+  }
+} 

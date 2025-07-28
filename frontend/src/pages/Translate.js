@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import analyticsService from '../services/analyticsService';
 import './Translate.css';
 
 const Translate = () => {
@@ -34,24 +35,44 @@ const Translate = () => {
         },
         body: JSON.stringify({ 
           text: inputText.trim(),
-          direction: languageDirection 
+          direction: languageDirection,
+          user_email: currentUser?.email
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setTranslatedText(data.translated_text || data.response);
+        const translatedResult = data.translated_text || data.response;
+        setTranslatedText(translatedResult);
         
         // Add to history
         const newTranslation = {
           id: Date.now(),
           original: inputText.trim(),
-          translated: data.translated_text || data.response,
+          translated: translatedResult,
           direction: languageDirection,
           timestamp: new Date().toLocaleString()
         };
         setTranslationHistory(prev => [newTranslation, ...prev.slice(0, 4)]);
+
+        // Track translation activity in Firebase
+        if (currentUser?.email) {
+          try {
+            await analyticsService.trackUserActivity(
+              currentUser.email,
+              'translation',
+              {
+                original_text: inputText.trim().substring(0, 100), // Limit length
+                translated_text: translatedResult.substring(0, 100),
+                direction: languageDirection,
+                word_count: inputText.trim().split(' ').length
+              }
+            );
+          } catch (analyticsError) {
+            console.warn('Analytics tracking failed:', analyticsError);
+          }
+        }
       } else {
         setError(data.error || 'Translation failed');
       }

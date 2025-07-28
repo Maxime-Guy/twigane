@@ -25,7 +25,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import requests
 
 # Add models to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'models', 'kinyarwanda-tts-v2'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'models', 'kinyarwanda-tts'))
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -116,8 +116,13 @@ def require_admin(func):
     
     @wraps(func)
     def admin_wrapper(*args, **kwargs):
+        # Try multiple ways to get user email
         data = request.get_json() or {}
-        user_email = data.get('user_email') or request.args.get('user_email')
+        user_email = (
+            data.get('user_email') or 
+            request.args.get('user_email') or
+            request.headers.get('X-User-Email')
+        )
         
         if not is_admin(user_email):
             return jsonify({"error": "Admin access required"}), 403
@@ -406,7 +411,7 @@ class TwiganeBackend:
         """Load the TTS system (unchanged - still local)"""
         try:
             # Add the TTS directory to Python path
-            tts_dir = Path("../models/kinyarwanda-tts-v2")
+            tts_dir = Path("../models/kinyarwanda-tts")
             sys.path.append(str(tts_dir))
             
             from improved_tts_api import ImprovedKinyarwandaTTS
@@ -845,17 +850,26 @@ class TwiganeBackend:
         
         if word:
             try:
-                # Generate audio for the word
-                audio_result = self.tts_system.generate_audio(word)
+                # Try to get existing audio first, then generate if needed
+                audio_result = self.tts_system.get_audio_for_word(word)
                 
-                if audio_result['success']:
+                # If no audio found, try to generate it
+                if not audio_result:
+                    logger.info(f"No existing audio for '{word}', attempting to generate...")
+                    audio_result = self.tts_system.generate_audio_for_word(word)
+                
+                if audio_result and audio_result.get('path'):
                     # Get teaching response about the word
                     teaching_response = self.get_teaching_response(f"What does {word} mean?")
                     
+                    # Extract filename from path - handle both 'path' and 'audio_path' keys
+                    audio_path = audio_result.get('path') or audio_result.get('audio_path')
+                    audio_filename = os.path.basename(audio_path)
+                    
                     return {
                         "response": f"Here's how to pronounce '{word}' in Kinyarwanda:",
-                        "audio_file": audio_result['audio_file'],
-                        "audio_url": f"/audio/{audio_result['audio_file']}",
+                        "audio_file": audio_filename,
+                        "audio_url": f"/audio/{audio_filename}",
                         "word": word,
                         "type": "pronunciation",
                         "teaching_info": teaching_response.get('response', ''),
@@ -870,7 +884,9 @@ class TwiganeBackend:
                     }
                     
             except Exception as e:
-                logger.error(f"TTS error: {e}")
+                logger.error(f"TTS error for word '{word}': {e}")
+                logger.error(f"TTS system loaded: {self.tts_loaded}")
+                logger.error(f"TTS system type: {type(self.tts_system) if hasattr(self, 'tts_system') else 'Not set'}")
                 return {
                     "response": f"I'm having trouble generating audio for '{word}' right now, but I can help you learn about it.",
                     "word": word,
@@ -886,7 +902,15 @@ class TwiganeBackend:
 
 # Initialize Flask app and backend
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS for production
+if os.environ.get('FLASK_ENV') == 'production':
+    # In production, only allow your frontend domain
+    # Update this URL when you deploy your frontend
+    CORS(app, origins=["https://your-frontend-domain.netlify.app"])
+else:
+    # In development, allow all origins
+    CORS(app)
 
 # Initialize backend
 backend = TwiganeBackend()
@@ -1252,6 +1276,27 @@ def learner_dashboard():
         recent_activities = [a for a in activities if 
                            (datetime.now() - datetime.fromisoformat(a["timestamp"])).days <= 7]
         
+        # Generate quiz scores from activities
+        quiz_scores = []
+        for activity in activities:
+            if activity.get("type") == "quiz_completion":
+                quiz_scores.append({
+                    "date": activity["timestamp"][:10],
+                    "score": activity.get("details", {}).get("score", 0),
+                    "questions": activity.get("details", {}).get("questions", 0)
+                })
+        
+        # Generate recommendations based on progress
+        recommendations = []
+        if progress.get("chat_count", 0) < 5:
+            recommendations.append("Try having more conversations to improve your skills")
+        if progress.get("translation_count", 0) < 10:
+            recommendations.append("Practice translation to build vocabulary")
+        if progress.get("quiz_attempts", 0) < 3:
+            recommendations.append("Take quizzes to test your knowledge")
+        if progress.get("pronunciation_count", 0) < 5:
+            recommendations.append("Practice pronunciation with audio features")
+        
         dashboard_data = {
             "overview": {
                 "total_lessons": progress.get("chat_count", 0),
@@ -1265,7 +1310,8 @@ def learner_dashboard():
                     progress.get("quiz_score_total", 0) / max(progress.get("quiz_attempts", 1), 1), 1
                 ) if progress.get("quiz_attempts", 0) > 0 else 0,
                 "total_interactions": len(activities),
-                "this_week_activities": len(recent_activities)
+                "this_week_activities": len(recent_activities),
+                "quiz_scores": quiz_scores[-10:]  # Last 10 quiz scores
             },
             "achievements": [
                 {"name": "First Steps", "earned": progress.get("chat_count", 0) >= 1},
@@ -1273,7 +1319,8 @@ def learner_dashboard():
                 {"name": "Quiz Master", "earned": progress.get("quiz_attempts", 0) >= 3},
                 {"name": "Pronunciation Pro", "earned": progress.get("pronunciation_count", 0) >= 10}
             ],
-            "recent_activity": activities[-5:] if activities else []  # Last 5 activities
+            "recommendations": recommendations,
+            "recent_activities": activities[-5:] if activities else []  # Last 5 activities
         }
         
         return jsonify(dashboard_data)
@@ -1287,7 +1334,7 @@ def serve_audio(filename):
     """Serve audio files for pronunciation"""
     try:
         if backend.tts_loaded:
-            audio_dir = Path("../models/kinyarwanda-tts-v2/audio")
+            audio_dir = Path("../models/kinyarwanda-tts/audio")
             return send_from_directory(str(audio_dir), filename)
         else:
             return jsonify({"error": "Audio system not available"}), 503
@@ -1321,5 +1368,13 @@ if __name__ == '__main__':
     print(f"   👨‍💼 Admin Email: {ADMIN_EMAIL}")
     print("="*60)
     
-    # Start server
-    app.run(host='0.0.0.0', port=5001, debug=True) 
+    # Start server - production vs development
+    port = int(os.environ.get('PORT', 5001))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    
+    if debug:
+        print("🔧 Running in development mode")
+        app.run(host='0.0.0.0', port=port, debug=True)
+    else:
+        print("🚀 Running in production mode")
+        app.run(host='0.0.0.0', port=port, debug=False) 

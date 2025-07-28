@@ -1,0 +1,282 @@
+.feedback-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 80px 20px 40px;
+}
+
+.feedback-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feedback-header {
+  text-align: center;
+  margin-bottom: 50px;
+  color: white;
+}
+
+.feedback-header h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.feedback-header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.feedback-content {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-intro {
+  margin-bottom: 40px;
+}
+
+.intro-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.intro-card {
+  background: #f8f9ff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #e0e6ff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.intro-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.intro-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.intro-card p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.feedback-form {
+  margin-bottom: 40px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e6ff;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.rating-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rating-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e0e6ff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rating-option:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.rating-option input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.rating-option input[type="radio"]:checked + .rating-star {
+  color: #fbbf24;
+}
+
+.rating-star {
+  font-size: 1.2rem;
+  color: #d1d5db;
+  transition: color 0.3s ease;
+}
+
+.rating-text {
+  color: #666;
+  font-weight: 500;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 15px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.feedback-footer {
+  border-top: 1px solid #e0e6ff;
+  padding-top: 30px;
+}
+
+.alternative-contact h3 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-methods {
+  display: grid;
+  gap: 15px;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #f8f9ff;
+  border-radius: 8px;
+  border: 1px solid #e0e6ff;
+}
+
+.contact-method strong {
+  color: #333;
+}
+
+.contact-method span {
+  color: #666;
+}
+
+.contact-method a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-method a:hover {
+  text-decoration: underline;
+}
+
+.success-message {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.success-message h2 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+.success-message p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .feedback-header h1 {
+    font-size: 2.5rem;
+  }
+  
+  .feedback-content {
+    padding: 25px;
+  }
+  
+  .intro-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .rating-options {
+    gap: 8px;
+  }
+  
+  .rating-option {
+    padding: 8px;
+  }
+  
+  .contact-method {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+} 

@@ -3,9 +3,6 @@ import './DynamicShowcase.css';
 
 const DynamicShowcase = () => {
   const [activeVocabIndex, setActiveVocabIndex] = useState(0);
-  const [learnerCount] = useState(1247); // Fixed value for demo
-  const [wordsLearned] = useState(15420); // Fixed value for demo
-  const [conversationsCount] = useState(8930); // Fixed value for demo
   const [currentDemo, setCurrentDemo] = useState(0);
 
   const vocabularyWords = [
@@ -36,17 +33,6 @@ const DynamicShowcase = () => {
       pronunciation: "mwi-ri-we"
     }
   ];
-
-  // Statistics will be updated when real user data is available
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setLearnerCount(prev => prev + Math.floor(Math.random() * 3));
-  //     setWordsLearned(prev => prev + Math.floor(Math.random() * 5));
-  //     setConversationsCount(prev => prev + Math.floor(Math.random() * 4));
-  //   }, 3000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   // Rotate vocabulary words
   useEffect(() => {
@@ -84,25 +70,6 @@ const DynamicShowcase = () => {
         </div>
 
         <div className="showcase-content">
-          {/* Live Statistics */}
-          <div className="stats-section">
-            <div className="stat-card">
-              <div className="stat-number">{learnerCount.toLocaleString()}</div>
-              <div className="stat-label">Active Learners</div>
-              <div className="stat-icon">👥</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{wordsLearned.toLocaleString()}</div>
-              <div className="stat-label">Words Learned</div>
-              <div className="stat-icon">📚</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-number">{conversationsCount.toLocaleString()}</div>
-              <div className="stat-label">Conversations</div>
-              <div className="stat-icon">💬</div>
-            </div>
-          </div>
-
           {/* Interactive Vocabulary */}
           <div className="vocabulary-section">
             <h3>Word of the Moment</h3>

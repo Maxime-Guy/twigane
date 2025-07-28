@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import analyticsService from '../services/analyticsService';
 import './Quiz.css';
 
 const Quiz = () => {
@@ -52,15 +53,16 @@ const Quiz = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          quiz_questions: currentQuiz.questions,
-          user_answers: answersToSubmit
+          questions: currentQuiz.questions,
+          answers: answersToSubmit,
+          user_email: currentUser?.email || 'anonymous'
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setQuizResults({
+        const resultsData = {
           ...data,
           time_taken: timeTaken,
           quiz_info: {
@@ -68,8 +70,46 @@ const Quiz = () => {
             difficulty: currentQuiz.difficulty,
             total_questions: currentQuiz.total_questions
           }
-        });
+        };
+        
+        setQuizResults(resultsData);
         setQuizState('results');
+
+        // Track quiz completion in Firebase
+        if (currentUser?.email) {
+          try {
+            console.log('🎯 Quiz API response data:', JSON.stringify(data, null, 2));
+            console.log('🎯 Current quiz data:', JSON.stringify(currentQuiz, null, 2));
+            
+            // Ensure we have valid data with defaults
+            const quizTrackingData = {
+              score: data.score || data.correct || 0,
+              percentage: data.percentage || data.score_percentage || 0,
+              totalQuestions: data.total_questions || data.totalQuestions || currentQuiz?.total_questions || 0,
+              category: currentQuiz?.category || 'mixed',
+              difficulty: currentQuiz?.difficulty || 'mixed'
+            };
+            
+            console.log('🎯 Tracking quiz with data:', JSON.stringify(quizTrackingData, null, 2));
+            
+            await analyticsService.trackQuizResult(currentUser.email, quizTrackingData);
+            
+            // Also track as general activity
+            await analyticsService.trackUserActivity(
+              currentUser.email,
+              'quiz',
+              {
+                score: quizTrackingData.score,
+                percentage: quizTrackingData.percentage,
+                category: quizTrackingData.category,
+                difficulty: quizTrackingData.difficulty,
+                time_taken: timeTaken
+              }
+            );
+          } catch (analyticsError) {
+            console.warn('Analytics tracking failed:', analyticsError);
+          }
+        }
       } else {
         setError(data.error || 'Failed to submit quiz');
       }
@@ -78,7 +118,7 @@ const Quiz = () => {
     } finally {
       setLoading(false);
     }
-  }, [userAnswers, currentQuiz, quizStartTime, API_URL]);
+  }, [userAnswers, currentQuiz, quizStartTime, API_URL, currentUser?.email]);
 
   // Load categories on component mount
   useEffect(() => {

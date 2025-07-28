@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import analyticsService from '../services/analyticsService';
 import './LearnerDashboard.css';
 
 const LearnerDashboard = () => {
@@ -11,12 +12,31 @@ const LearnerDashboard = () => {
   const fetchLearnerData = useCallback(async () => {
     try {
       setLoading(true);
+      setError('');
       
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5001'}/learner/dashboard`, {
+      // Try Firebase analytics service first
+      try {
+        console.log('🔥 Fetching data from Firebase Analytics for:', currentUser?.email);
+        const firebaseData = await analyticsService.getUserDashboardData(currentUser?.email);
+        
+        console.log('🔥 Firebase raw data received:', JSON.stringify(firebaseData, null, 2));
+        
+        if (firebaseData && Object.keys(firebaseData).length > 0) {
+          console.log('✅ Successfully loaded Firebase analytics data, setting dashboard data');
+          setDashboardData(firebaseData);
+          return;
+        } else {
+          console.warn('⚠️ Firebase data empty or invalid, falling back to backend API');
+        }
+      } catch (firebaseErr) {
+        console.error('❌ Firebase analytics error, falling back to backend API:', firebaseErr);
+      }
+      
+      // Fallback to backend API
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5001'}/learner/dashboard?user_email=${encodeURIComponent(currentUser?.email || '')}`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
-          'X-User-Email': currentUser?.email || ''
+          'Content-Type': 'application/json'
         }
       });
 
@@ -211,20 +231,20 @@ const LearnerDashboard = () => {
           </div>
 
           {/* Quiz Scores Chart */}
-          {dashboardData.progress.quiz_scores.length > 0 && (
+          {dashboardData.progress.quiz_scores && dashboardData.progress.quiz_scores.length > 0 && (
             <div className="quiz-scores-section">
               <h2>Recent Quiz Performance</h2>
               <div className="quiz-chart">
-                {dashboardData.progress.quiz_scores.map((score, index) => (
+                {dashboardData.progress.quiz_scores.map((scoreData, index) => (
                   <div key={index} className="quiz-score-bar">
                     <div 
                       className="score-fill" 
                       style={{
-                        height: `${score}%`,
-                        backgroundColor: score >= 80 ? '#28a745' : score >= 60 ? '#ffc107' : '#dc3545'
+                        height: `${scoreData.score}%`,
+                        backgroundColor: scoreData.score >= 80 ? '#28a745' : scoreData.score >= 60 ? '#ffc107' : '#dc3545'
                       }}
                     ></div>
-                    <div className="score-label">{score}%</div>
+                    <div className="score-label">{scoreData.score}%</div>
                   </div>
                 ))}
               </div>
@@ -251,7 +271,7 @@ const LearnerDashboard = () => {
           </div>
 
           {/* Recommendations */}
-          {dashboardData.recommendations.length > 0 && (
+          {dashboardData.recommendations && dashboardData.recommendations.length > 0 && (
             <div className="recommendations-section">
               <h2>Personalized Recommendations</h2>
               <div className="recommendations-list">
@@ -266,7 +286,7 @@ const LearnerDashboard = () => {
           )}
 
           {/* Recent Activities */}
-          {dashboardData.recent_activities.length > 0 && (
+          {dashboardData.recent_activities && dashboardData.recent_activities.length > 0 && (
             <div className="activities-section">
               <h2>Recent Activity</h2>
               <div className="activities-timeline">

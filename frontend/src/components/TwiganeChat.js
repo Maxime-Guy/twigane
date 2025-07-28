@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import analyticsService from '../services/analyticsService';
 import './TwiganeChat.css';
 
 const TwiganeChat = () => {
@@ -78,8 +79,16 @@ const TwiganeChat = () => {
         audioRef.current.pause();
       }
       
-      const filename = audioPath.split('/').pop();
-      const audioUrl = `${API_URL}/audio/${filename}`;
+      // If audioPath already includes the full URL (starts with /audio/), use it directly
+      let audioUrl;
+      if (audioPath.startsWith('/audio/')) {
+        audioUrl = `${API_URL}${audioPath}`;
+      } else {
+        const filename = audioPath.split('/').pop();
+        audioUrl = `${API_URL}/audio/${filename}`;
+      }
+      
+      console.log('Playing audio from:', audioUrl); // Debug log
       
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
@@ -130,7 +139,10 @@ const TwiganeChat = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ question: userMessage })
+        body: JSON.stringify({ 
+          question: userMessage,
+          user_email: currentUser?.email 
+        })
       });
 
       if (response.ok) {
@@ -147,12 +159,42 @@ const TwiganeChat = () => {
 
         addMessage(botMessage);
 
-        if (data.type === 'pronunciation' && data.audio_path) {
+        // Track user activity in Firebase
+        if (currentUser?.email) {
+          try {
+            const activityType = data.type === 'pronunciation' ? 'pronunciation' : 'chat';
+            console.log('🔥 Tracking activity:', activityType, 'for response type:', data.type);
+            console.log('🔥 Chat API response data:', JSON.stringify(data, null, 2));
+            
+            // Create activity details with defaults for undefined values
+            const activityDetails = {
+              question: userMessage.substring(0, 100), // Limit length for storage
+              response_type: data.type || 'chat',
+              category: data.category || 'general',
+              confidence: typeof data.confidence === 'number' ? data.confidence : 0.5,
+              word: data.word || null // For pronunciation requests
+            };
+            
+            console.log('🔥 Tracking with details:', JSON.stringify(activityDetails, null, 2));
+            
+            await analyticsService.trackUserActivity(
+              currentUser.email, 
+              activityType,
+              activityDetails
+            );
+            
+            console.log('✅ Activity tracked successfully:', activityType);
+          } catch (analyticsError) {
+            console.error('❌ Analytics tracking failed:', analyticsError);
+          }
+        }
+
+        if (data.type === 'pronunciation' && data.audio_url) {
           addMessage({
             text: `🎵 Click to hear "${data.word}" pronounced:`,
             sender: 'bot',
             type: 'audio-button',
-            audioPath: data.audio_path,
+            audioPath: data.audio_url,
             word: data.word,
             enhancedPronunciation: data.enhanced_pronunciation,
             duration: data.duration
