@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { isAdmin, shouldShowLearnerFeatures } from '../utils/adminUtils';
+import { isAdmin } from '../utils/adminUtils';
 
 // Component that redirects admin users away from learner-only pages
 const AdminRoute = ({ children }) => {

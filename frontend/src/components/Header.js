@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { isAdmin, shouldShowLearnerFeatures, shouldShowAdminFeatures, getWelcomeMessage } from '../utils/adminUtils';
+import { shouldShowAdminFeatures, getWelcomeMessage } from '../utils/adminUtils';
 import './Header.css';
 
 const Header = () => {

@@ -463,7 +463,6 @@ class AnalyticsService {
     // Simple streak calculation - count consecutive days with activity
     const uniqueDates = [...new Set(activities.map(a => a.date))].sort().reverse();
     let streak = 0;
-    const today = new Date().toISOString().split('T')[0];
     
     for (let i = 0; i < uniqueDates.length; i++) {
       const expectedDate = new Date();
@@ -540,4 +539,5 @@ class AnalyticsService {
   }
 }
 
-export default new AnalyticsService(); 
+const analyticsService = new AnalyticsService();
+export default analyticsService; 
