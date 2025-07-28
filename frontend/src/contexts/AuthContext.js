@@ -6,7 +6,8 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
 
@@ -69,6 +70,13 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  function resetPassword(email) {
+    if (!isAuthInitialized) {
+      throw new Error('Firebase authentication is not properly configured. Please check your .env file.');
+    }
+    return sendPasswordResetEmail(auth, email);
+  }
+
   useEffect(() => {
     if (!isAuthInitialized) {
       setAuthError('Firebase authentication is not properly configured. Please check your .env file.');
@@ -92,6 +100,7 @@ export function AuthProvider({ children }) {
     login,
     signInWithGoogle,
     logout,
+    resetPassword,
     authError,
     isAuthInitialized
   };

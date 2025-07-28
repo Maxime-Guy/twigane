@@ -12,12 +12,32 @@ const Features = () => {
         
         <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon text-generation-icon">
-              <span className="icon-letter">B</span>
+            <div className="feature-icon chat-icon">
+              <span className="icon-emoji">💬</span>
             </div>
-            <h3 className="feature-title">Text Generation</h3>
+            <h3 className="feature-title">AI Chat Practice</h3>
             <p className="feature-description">
-              Practice forming sentences and expressing yourself in Kinyarwanda with our text generation feature.
+              Engage in real-time conversations with our AI tutor. Practice everyday scenarios, ask questions, and improve your conversational skills naturally.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon translation-icon">
+              <span className="icon-emoji">🔄</span>
+            </div>
+            <h3 className="feature-title">Smart Translation</h3>
+            <p className="feature-description">
+              Translate text between Kinyarwanda and other languages instantly. Perfect for understanding new words and phrases during your learning journey.
+            </p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon quiz-icon">
+              <span className="icon-emoji">🧠</span>
+            </div>
+            <h3 className="feature-title">Interactive Quizzes</h3>
+            <p className="feature-description">
+              Test your knowledge with dynamic quizzes covering vocabulary, grammar, and comprehension. Track your progress and identify areas for improvement.
             </p>
           </div>
           
@@ -33,9 +53,29 @@ const Features = () => {
                 </div>
               </div>
             </div>
-            <h3 className="feature-title">Text-to-Speech</h3>
+            <h3 className="feature-title">Pronunciation Guide</h3>
             <p className="feature-description">
-              Hear how words and phrases are pronounced with our text-to-speech feature, helping you master the language's sounds.
+              Master authentic Kinyarwanda pronunciation with our text-to-speech feature. Hear native-like pronunciation for words, phrases, and sentences.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon dashboard-icon">
+              <span className="icon-emoji">📊</span>
+            </div>
+            <h3 className="feature-title">Progress Dashboard</h3>
+            <p className="feature-description">
+              Monitor your learning journey with detailed analytics. View your achievements, track streaks, and celebrate milestones as you advance.
+            </p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon text-generation-icon">
+              <span className="icon-emoji">✍️</span>
+            </div>
+            <h3 className="feature-title">Text Generation</h3>
+            <p className="feature-description">
+              Generate creative content in Kinyarwanda. Practice writing skills by creating stories, conversations, and expressions with AI assistance.
             </p>
           </div>
         </div>

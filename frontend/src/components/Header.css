@@ -659,4 +659,192 @@
 .auth-btn:disabled:hover {
   transform: none !important;
   box-shadow: none !important;
+}
+
+/* Password Reset Styles */
+.password-reset-success {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.success-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.password-reset-success h3 {
+  color: #4CAF50;
+  margin: 1rem 0;
+  font-size: 1.3rem;
+}
+
+.password-reset-success p {
+  color: #666;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+
+.reset-note {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin: 0 0.25rem;
+}
+
+.link-button:hover {
+  color: #0056b3;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.forgot-password-link .link-button {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.forgot-password-link .link-button:hover {
+  color: #007bff;
+}
+
+/* Enhanced Mobile Navigation */
+@media (max-width: 1024px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+  
+  .nav {
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 0;
+  }
+  
+  .header-container {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    order: 3;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+  
+  .nav-link {
+    background: #f8f9fa;
+    color: #374151;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-link.admin-link {
+    background: #667eea;
+    color: white;
+  }
+  
+  .logo-text {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-user {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  
+  .user-menu {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .logout-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Modal improvements */
+  .auth-modal {
+    margin: 1rem;
+  }
+  
+  .auth-modal-content {
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .auth-tabs {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .auth-tab {
+    flex: 1;
+    min-width: 100px;
+    font-size: 0.9rem;
+  }
+  
+  /* Password reset responsive */
+  .password-reset-success {
+    padding: 1.5rem 1rem;
+  }
+  
+  .success-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 1.3rem;
+  }
+  
+  .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .auth-tab {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .welcome-user {
+    font-size: 0.8rem;
+  }
+  
+  .logout-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 } 

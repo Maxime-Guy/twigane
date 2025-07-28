@@ -5,7 +5,7 @@ import { shouldShowAdminFeatures, getWelcomeMessage } from '../utils/adminUtils'
 import './Header.css';
 
 const Header = () => {
-  const { currentUser, login, signup, signInWithGoogle, logout, authError, isAuthInitialized } = useAuth();
+  const { currentUser, login, signup, signInWithGoogle, logout, resetPassword, authError, isAuthInitialized } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authMode, setAuthMode] = useState('signin');
   const [authData, setAuthData] = useState({
@@ -16,6 +16,7 @@ const Header = () => {
   });
   const [localAuthError, setLocalAuthError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +24,11 @@ const Header = () => {
     setIsLoading(true);
 
     try {
-      if (authMode === 'signup') {
+      if (authMode === 'forgot') {
+        await resetPassword(authData.email);
+        setResetEmailSent(true);
+        setLocalAuthError('');
+      } else if (authMode === 'signup') {
         if (authData.password !== authData.confirmPassword) {
           setLocalAuthError('Passwords do not match');
           setIsLoading(false);
@@ -35,13 +40,15 @@ const Header = () => {
           return;
         }
         await signup(authData.email, authData.password, authData.name);
+        // Reset form and close modal on success
+        setAuthData({ email: '', password: '', name: '', confirmPassword: '' });
+        setShowAuthModal(false);
       } else {
         await login(authData.email, authData.password);
+        // Reset form and close modal on success
+        setAuthData({ email: '', password: '', name: '', confirmPassword: '' });
+        setShowAuthModal(false);
       }
-      
-      // Reset form and close modal on success
-      setAuthData({ email: '', password: '', name: '', confirmPassword: '' });
-      setShowAuthModal(false);
     } catch (error) {
       setLocalAuthError(error.message);
     } finally {
@@ -87,6 +94,7 @@ const Header = () => {
     setAuthMode(mode);
     setShowAuthModal(true);
     setLocalAuthError('');
+    setResetEmailSent(false);
     setAuthData({ email: '', password: '', name: '', confirmPassword: '' });
   };
 
@@ -196,15 +204,21 @@ const Header = () => {
             <div className="auth-tabs">
               <button 
                 className={`auth-tab ${authMode === 'signin' ? 'active' : ''}`}
-                onClick={() => setAuthMode('signin')}
+                onClick={() => { setAuthMode('signin'); setResetEmailSent(false); }}
               >
                 Sign In
               </button>
               <button 
                 className={`auth-tab ${authMode === 'signup' ? 'active' : ''}`}
-                onClick={() => setAuthMode('signup')}
+                onClick={() => { setAuthMode('signup'); setResetEmailSent(false); }}
               >
                 Sign Up
+              </button>
+              <button 
+                className={`auth-tab ${authMode === 'forgot' ? 'active' : ''}`}
+                onClick={() => { setAuthMode('forgot'); setResetEmailSent(false); }}
+              >
+                Reset Password
               </button>
             </div>
 
@@ -229,73 +243,117 @@ const Header = () => {
               <span>or</span>
             </div>
 
-            <form onSubmit={handleAuthSubmit} className="auth-form">
-              {authMode === 'signup' && (
+            {authMode === 'forgot' && resetEmailSent ? (
+              <div className="password-reset-success">
+                <div className="success-icon">✅</div>
+                <h3>Password Reset Email Sent!</h3>
+                <p>
+                  We've sent a password reset link to <strong>{authData.email}</strong>. 
+                  Please check your email and follow the instructions to reset your password.
+                </p>
+                <p className="reset-note">
+                  Don't see the email? Check your spam folder or 
+                  <button 
+                    className="link-button" 
+                    onClick={() => setResetEmailSent(false)}
+                  >
+                    try again
+                  </button>.
+                </p>
+                <button 
+                  className="auth-submit-btn" 
+                  onClick={() => { setAuthMode('signin'); setResetEmailSent(false); }}
+                >
+                  Back to Sign In
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleAuthSubmit} className="auth-form">
+                {authMode === 'signup' && (
+                  <div className="form-group">
+                    <label htmlFor="name">Full Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={authData.name}
+                      onChange={handleAuthInputChange}
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+                )}
+
                 <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
+                  <label htmlFor="email">Email</label>
                   <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={authData.name}
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={authData.email}
                     onChange={handleAuthInputChange}
-                    placeholder="Enter your full name"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
-              )}
 
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={authData.email}
-                  onChange={handleAuthInputChange}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
+                {authMode !== 'forgot' && (
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={authData.password}
+                      onChange={handleAuthInputChange}
+                      placeholder="Enter your password"
+                      required
+                    />
+                  </div>
+                )}
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={authData.password}
-                  onChange={handleAuthInputChange}
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
+                {authMode === 'signup' && (
+                  <div className="form-group">
+                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={authData.confirmPassword}
+                      onChange={handleAuthInputChange}
+                      placeholder="Confirm your password"
+                      required
+                    />
+                  </div>
+                )}
 
-              {authMode === 'signup' && (
-                <div className="form-group">
-                  <label htmlFor="confirmPassword">Confirm Password</label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={authData.confirmPassword}
-                    onChange={handleAuthInputChange}
-                    placeholder="Confirm your password"
-                    required
-                  />
-                </div>
-              )}
+                {authMode === 'signin' && (
+                  <div className="forgot-password-link">
+                    <button 
+                      type="button" 
+                      className="link-button" 
+                      onClick={() => { setAuthMode('forgot'); setLocalAuthError(''); }}
+                    >
+                      Forgot your password?
+                    </button>
+                  </div>
+                )}
 
-              {localAuthError && (
-                <div className="auth-error">
-                  {localAuthError}
-                </div>
-              )}
+                {localAuthError && (
+                  <div className="auth-error">
+                    {localAuthError}
+                  </div>
+                )}
 
-              <button type="submit" className="auth-submit-btn" disabled={isLoading || !isAuthInitialized}>
-                {isLoading ? 'Loading...' : (authMode === 'signin' ? 'Sign In with Email' : 'Sign Up with Email')}
-              </button>
-            </form>
+                <button type="submit" className="auth-submit-btn" disabled={isLoading || !isAuthInitialized}>
+                  {isLoading ? 'Loading...' : 
+                    authMode === 'signin' ? 'Sign In with Email' : 
+                    authMode === 'signup' ? 'Sign Up with Email' : 
+                    'Send Password Reset Email'
+                  }
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
