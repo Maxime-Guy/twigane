@@ -1,29 +1,23 @@
 [build]
-  # Build command
+  base = "frontend"
   command = "npm run build"
-  
-  # Directory to publish (build output)
   publish = "build"
-  
-  # Environment variables for build process
-  [build.environment]
-    NODE_VERSION = "18"
-    NPM_VERSION = "9"
 
-# Redirect rules for React Router (SPA)
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "REACT_APP_FIREBASE_API_KEY,REACT_APP_FIREBASE_AUTH_DOMAIN,REACT_APP_FIREBASE_PROJECT_ID,REACT_APP_FIREBASE_STORAGE_BUCKET,REACT_APP_FIREBASE_MESSAGING_SENDER_ID,REACT_APP_FIREBASE_APP_ID,REACT_APP_API_URL"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-# Headers for security and performance
 [[headers]]
   for = "/*"
   [headers.values]
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
   for = "/static/*"
