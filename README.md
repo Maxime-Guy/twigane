@@ -14,7 +14,11 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0.0-green?logo=flask)](https://flask.palletsprojects.com/)
 [![Netlify](https://img.shields.io/badge/Netlify-Live-00C7B7?logo=netlify)](https://twigane.netlify.app/)
 
-**🌐 [Visit Live Application](https://twigane.netlify.app/)**
+**🌐 <a href="https://twigane.netlify.app/" target="_blank">Visit Live Application</a>**
+
+**📺 <a href="https://youtu.be/oBabq0fpe04" target="_blank">
+<img src="https://img.shields.io/badge/Demo_Video-Watch_on_YouTube-red?style=for-the-badge&logo=youtube" alt="Demo Video">
+</a>**
 
 </div>
 
@@ -35,7 +39,7 @@ The platform offers a complete learning ecosystem featuring AI-powered conversat
 
 **Founded by**: Maxime Guy Bakunzi  
 **Contact**: guymaximebakunzi@gmail.com  
-**Live Platform**: [https://twigane.netlify.app/](https://twigane.netlify.app/)
+**Live Platform**: <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
 
 ## 🚀 **Core Features**
 
@@ -68,7 +72,7 @@ Optimized experience across all devices - desktop, tablet, and mobile with touch
 ## 🏗️ **System Architecture**
 
 ### **Frontend (Live Production)**
-- **🌐 Platform**: Netlify ([https://twigane.netlify.app/](https://twigane.netlify.app/))
+- **🌐 Platform**: Netlify (<a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>)
 - **⚛️ Framework**: React.js 18.2.0
 - **🎨 Styling**: Custom CSS with responsive design
 - **🔐 Authentication**: Firebase Auth with Google Sign-In
@@ -138,7 +142,7 @@ twigane/
 
 ### **🌐 Try Twigane Online (Recommended)**
 
-**Visit the live application**: [https://twigane.netlify.app/](https://twigane.netlify.app/)
+**Visit the live application**: <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
 
 - ✅ **No installation required**
 - ✅ **Full feature access** (Chat, Translation, Quizzes, Dashboards)
@@ -356,7 +360,7 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 ## 🛠️ **Development & Deployment**
 
 ### **🚀 Current Deployment Status**
-- **✅ Frontend**: Live on Netlify at [https://twigane.netlify.app/](https://twigane.netlify.app/)
+- **✅ Frontend**: Live on Netlify at <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
 - **⚠️ Backend**: Local development only (models require significant memory)
 - **✅ Database**: Firebase Firestore (live and operational)
 - **✅ Authentication**: Firebase Auth (fully functional)
@@ -410,7 +414,7 @@ pip install -r requirements.txt
 ### **🟢 Production Environment**
 
 #### **Frontend (Netlify)**
-- **URL**: [https://twigane.netlify.app/](https://twigane.netlify.app/)
+- **URL**: <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
 - **Build Command**: `npm run build`
 - **Publish Directory**: `build`
 - **Auto-Deploy**: Triggered on `main` branch commits
@@ -567,7 +571,7 @@ Twigane aims to make Kinyarwanda language learning accessible, engaging, and eff
 **Maxime Guy Bakunzi**  
 *Founder & Lead Developer*
 - **Email**: [guymaximebakunzi@gmail.com](mailto:guymaximebakunzi@gmail.com)
-- **Platform**: [https://twigane.netlify.app/](https://twigane.netlify.app/)
+- **Platform**: <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
 
 ### **💬 Get Help**
 - **🐛 Bug Reports**: Use GitHub Issues for technical problems
@@ -592,7 +596,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-[![Live Application](https://img.shields.io/badge/🌐_Live_Application-Visit_Twigane-blue?style=for-the-badge)](https://twigane.netlify.app/)
+<a href="https://twigane.netlify.app/" target="_blank">
+<img src="https://img.shields.io/badge/🌐_Live_Application-Visit_Twigane-blue?style=for-the-badge" alt="Live Application">
+</a>
 
 **Made with ❤️ for the global Kinyarwanda learning community**
 
