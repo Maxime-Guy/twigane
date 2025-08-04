@@ -9,9 +9,9 @@
 
 **Master Rwanda's beautiful language through comprehensive interactive learning**
 
-[![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)](https://reactjs.org/)
-[![Firebase](https://img.shields.io/badge/Firebase-10.8.0-orange?logo=firebase)](https://firebase.google.com/)
-[![Flask](https://img.shields.io/badge/Flask-3.0.0-green?logo=flask)](https://flask.palletsprojects.com/)
+[![React](https://img.shields.io/badge/React-19.1.0-blue?logo=react)](https://reactjs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-12.0.0-orange?logo=firebase)](https://firebase.google.com/)
+[![Flask](https://img.shields.io/badge/Flask-3.0.3-green?logo=flask)](https://flask.palletsprojects.com/)
 [![Netlify](https://img.shields.io/badge/Netlify-Live-00C7B7?logo=netlify)](https://twigane.netlify.app/)
 
 **🌐 <a href="https://twigane.netlify.app/" target="_blank">Visit Live Application</a>**
@@ -79,13 +79,13 @@ Optimized experience across all devices - desktop, tablet, and mobile with touch
 
 ### **Frontend (Live Production)**
 - **🌐 Platform**: Netlify (<a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>)
-- **⚛️ Framework**: React.js 18.2.0
+- **⚛️ Framework**: React.js 19.1.0
 - **🎨 Styling**: Custom CSS with responsive design
 - **🔐 Authentication**: Firebase Auth with Google Sign-In
 - **📊 Analytics**: Firebase Firestore for real-time data
 
 ### **Backend (Local Development)**
-- **🐍 Framework**: Flask 3.0.0 with Python
+- **🐍 Framework**: Flask 3.0.3 with Python
 - **🤖 AI Models**: Transformers with PyTorch
 - **🔊 Audio**: Mozilla Common Voice native speaker recordings
 - **📡 API**: RESTful endpoints for chat, translation, and quizzes
@@ -100,37 +100,68 @@ Optimized experience across all devices - desktop, tablet, and mobile with touch
 twigane/
 ├── frontend/                    # React application (Deployed on Netlify)    
 │   ├── public/                 # Static assets
+│   │   ├── favicon.ico
+│   │   ├── index.html
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
 │   ├── src/
+│   │   ├── App.css            # Main application styles
+│   │   ├── App.js             # Main application component
+│   │   ├── App.test.js        # Application tests
+│   │   ├── index.css          # Global styles
+│   │   ├── index.js           # Application entry point
+│   │   ├── logo.svg           # React logo
+│   │   ├── reportWebVitals.js # Performance reporting
+│   │   ├── setupTests.js      # Test configuration
 │   │   ├── components/         # Reusable UI components
-│   │   │   ├── Header.js       # Navigation with role-based access
-│   │   │   ├── Footer.js       # Responsive footer
-│   │   │   ├── Hero.js         # Dynamic hero section
-│   │   │   ├── Features.js     # Feature showcase
-│   │   │   └── TwiganeChat.js  # Chat interface
+│   │   │   ├── AccessDenied.js/.css    # Access denied page
+│   │   │   ├── AdminRoute.js           # Admin route protection
+│   │   │   ├── DynamicShowcase.js/.css # Feature showcase
+│   │   │   ├── Features.js/.css        # Feature highlights
+│   │   │   ├── Footer.js/.css          # Responsive footer
+│   │   │   ├── Header.js/.css          # Navigation with role-based access
+│   │   │   ├── Hero.js/.css            # Dynamic hero section
+│   │   │   └── TwiganeChat.js/.css     # Chat interface
 │   │   ├── pages/              # Main application pages
-│   │   │   ├── Home.js         # Landing page
-│   │   │   ├── Chat.js         # AI conversation page
-│   │   │   ├── Quiz.js         # Interactive quiz system
-│   │   │   ├── Translate.js    # Translation interface
-│   │   │   ├── LearnerDashboard.js # Student progress tracking
-│   │   │   ├── AdminDashboard.js   # Administrator analytics
-│   │   │   ├── About.js        # Platform information
-│   │   │   └── Settings.js     # User preferences
+│   │   │   ├── About.js/.css           # Platform information
+│   │   │   ├── AdminDashboard.js/.css  # Administrator analytics
+│   │   │   ├── Chat.js/.css            # AI conversation page
+│   │   │   ├── FAQ.js/.css             # Frequently asked questions
+│   │   │   ├── Feedback.js/.css        # User feedback system
+│   │   │   ├── HelpCenter.js/.css      # Help and support
+│   │   │   ├── Home.js                 # Landing page
+│   │   │   ├── LearnerDashboard.js/.css # Student progress tracking
+│   │   │   ├── PrivacyPolicy.js/.css   # Privacy policy page
+│   │   │   ├── Quiz.js/.css            # Interactive quiz system
+│   │   │   ├── Settings.js/.css        # User preferences
+│   │   │   ├── TermsOfService.js/.css  # Terms of service
+│   │   │   └── Translate.js/.css       # Translation interface
 │   │   ├── contexts/           # React contexts
 │   │   │   └── AuthContext.js  # Firebase authentication
 │   │   ├── services/           # External service integrations
 │   │   │   └── analyticsService.js # Firebase analytics
 │   │   ├── utils/              # Utility functions
-│   │   │   └── adminUtils.js   # Role-based access control
+│   │   │   ├── adminUtils.js   # Role-based access control
+│   │   │   └── testAnalytics.js # Analytics testing utilities
 │   │   └── firebase/           # Firebase configuration
 │   │       └── config.js       # Firebase setup
 │   ├── netlify.toml           # Netlify deployment configuration
-│   └── package.json           # Dependencies and scripts
+│   ├── package.json           # Dependencies and scripts
+│   ├── package-lock.json      # Dependency lock file
+│   └── README.md              # Frontend documentation
 ├── backend/                    # Flask API server (Local development)
 │   ├── app.py                 # Main API endpoints
-│   ├── requirements.txt       # Python dependencies
+│   ├── common_voice_audio.py  # Audio processing and serving
+│   ├── Procfile               # Process configuration for deployment
 │   ├── quiz_data.py          # Quiz questions and logic
-│   └── test_backend.py       # API testing suite
+│   ├── README.md             # Backend documentation
+│   ├── render.yaml           # Render deployment configuration
+│   ├── requirements.txt      # Python dependencies  
+│   ├── start.sh              # Startup script
+│   ├── test_backend.py       # API testing suite
+│   └── test_common_voice_integration.py # Audio integration tests
 ├── models/                     # AI models and audio system
 ├── notebooks/                  # Jupyter notebooks for development
 │   ├── kinyarwanda_data_exploration.ipynb
@@ -138,10 +169,20 @@ twigane/
 │   └── simple_translation_model.ipynb
 ├── datasets/                   # Training data and audio corpus
 │   ├── kinyarwanda_dataset_final.jsonl
-│   ├── cv-corpus-21.0-delta-2025-03-14/ # Common Voice Kinyarwanda (Native Audio)
-│   │   └── rw/clips/          # 46+ native speaker MP3 recordings
-│   └── learn-kinyarwanda.pdf
-└── upload_models_to_hf.py     # HuggingFace model deployment
+│   ├── other_entries.jsonl    # Additional dataset entries
+│   ├── tts_data.csv          # Text-to-speech training data
+│   ├── learn-kinyarwanda.pdf # Learning resource
+│   └── cv-corpus-21.0-delta-2025-03-14/ # Common Voice Kinyarwanda (Native Audio)
+│       └── rw/                # Kinyarwanda language data
+│           ├── clip_durations.tsv    # Audio duration metadata
+│           ├── clips/               # 46+ native speaker MP3 recordings
+│           │   └── common_voice_rw_*.mp3 # Native audio files
+│           ├── invalidated.tsv      # Invalid recordings
+│           ├── other.tsv           # Other recordings
+│           ├── reported.tsv        # Reported recordings
+│           ├── unvalidated_sentences.tsv # Unvalidated text
+│           └── validated.tsv       # Validated recordings metadata
+└── README.md                   # Project documentation
 ```
 
 ## 🚀 **Getting Started**
@@ -274,12 +315,17 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/health` | GET | System health and status check |
-| `/api/chat` | POST | AI-powered conversation responses |
-| `/api/translate` | POST | Text translation between languages |
-| `/api/quiz` | POST | Dynamic quiz question generation |
-| `/available-sentences` | GET | List all available native speaker recordings |
+| `/chat` | POST | AI-powered conversation responses with teaching model |
+| `/translate` | POST | English to Kinyarwanda translation |
+| `/stats` | GET | System statistics and model information |
+| `/quiz/random` | GET | Generate random quiz questions |
+| `/quiz/categories` | GET | Get available quiz categories |
+| `/quiz/difficulties` | GET | Get available difficulty levels |
+| `/quiz/score` | POST | Score quiz submissions |
 | `/learner/dashboard` | GET | Learner progress and analytics |
 | `/admin/dashboard` | GET | Administrator system insights |
+| `/admin/users` | GET | Admin user management (admin only) |
+| `/available-sentences` | GET | List all available native speaker recordings |
 | `/common-voice-audio/<filename>` | GET | Serve native speaker audio files |
 
 ### **📊 Data Models**
@@ -369,7 +415,7 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 
 ### **🚀 Current Deployment Status**
 - **✅ Frontend**: Live on Netlify at <a href="https://twigane.netlify.app/" target="_blank">https://twigane.netlify.app/</a>
-- **⚠️ Backend**: Local development only (models require significant memory)
+- **🔧 Backend**: Deployment-ready with Render and Heroku configurations (models require significant memory)
 - **✅ Database**: Firebase Firestore (live and operational)
 - **✅ Authentication**: Firebase Auth (fully functional)
 
@@ -519,13 +565,13 @@ We welcome contributions to make Twigane even better! Here's how you can help:
 - ✅ **Authentication**: Complete with Firebase Auth
 - ✅ **Analytics**: Real-time tracking implemented
 - ✅ **Responsive Design**: Cross-device compatibility
-- ⚠️ **Backend API**: Local development ready, deployment pending
+- ⚠️ **Backend API**: Deployment-ready with configurations, awaiting cloud deployment
 - 🚧 **AI Models**: Continuous improvement and optimization
 
 ### **🎯 Contributing Areas**
 
 #### **High Priority**
-- [ ] **Backend Deployment**: Deploy Flask API to cloud platform with sufficient memory
+- [ ] **Backend Deployment**: Deploy Flask API using available Render/Heroku configurations (requires platform with sufficient memory)
 - [ ] **Content Expansion**: Add more quiz questions and conversation scenarios
 - [ ] **Model Optimization**: Improve AI response accuracy and speed
 - [x] **Native Audio System**: ✅ Implemented with 46+ native speaker recordings from Common Voice
