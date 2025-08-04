@@ -24,7 +24,6 @@ const TwiganeChat = () => {
   
   // State for available sentences
   const [availableSentences, setAvailableSentences] = useState(null);
-  const [showAvailableSentences, setShowAvailableSentences] = useState(false);
   const [loadingAvailableSentences, setLoadingAvailableSentences] = useState(false);
   const [showNativeWordsDropdown, setShowNativeWordsDropdown] = useState(false);
   const audioRef = useRef(null);
@@ -126,50 +125,6 @@ const TwiganeChat = () => {
         sender: 'bot',
         type: 'error'
       });
-    }
-  };
-
-  const fetchAvailableSentences = async () => {
-    if (loadingAvailableSentences || availableSentences) return;
-    
-    setLoadingAvailableSentences(true);
-    try {
-      const response = await fetch(`${API_URL}/available-sentences`);
-      if (response.ok) {
-        const data = await response.json();
-        setAvailableSentences(data);
-        
-        // Add a message showing available sentences
-        const categoriesText = Object.entries(data.categories)
-          .map(([category, sentences]) => `${category}: ${sentences.length} words`)
-          .join(', ');
-        
-        addMessage({
-          text: `📢 I have ${data.total} words and phrases with native speaker recordings! Categories: ${categoriesText}. Click on any sentence below to hear it pronounced:`,
-          sender: 'bot',
-          type: 'available-sentences',
-          categories: data.categories,
-          sentences: data.sentences,
-          total: data.total
-        });
-        
-        setShowAvailableSentences(true);
-      } else {
-        addMessage({
-          text: `❌ Couldn't load available sentences. The audio system might not be ready yet.`,
-          sender: 'bot',
-          type: 'error'
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching available sentences:', error);
-      addMessage({
-        text: `❌ Error loading available sentences. Please try again later.`,
-        sender: 'bot',
-        type: 'error'
-      });
-    } finally {
-      setLoadingAvailableSentences(false);
     }
   };
 
@@ -425,28 +380,6 @@ const TwiganeChat = () => {
                   <small>💡 {message.availableCount} words available with native recordings</small>
                 )}
               </div>
-            </div>
-          )}
-          
-          {message.type === 'available-sentences' && message.categories && (
-            <div className="available-sentences">
-              {Object.entries(message.categories).map(([category, sentences]) => (
-                <div key={category} className="sentence-category">
-                  <h4 className="category-title">{category.replace('_', ' ').toUpperCase()} ({sentences.length} words)</h4>
-                  <div className="sentences-grid">
-                    {sentences.map((sentence, index) => (
-                      <button
-                        key={index}
-                        className="sentence-button"
-                        onClick={() => setQuickQuestion(`How does "${sentence}" sound?`)}
-                        title={`Click to hear "${sentence}" pronounced`}
-                      >
-                        🔊 {sentence}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
             </div>
           )}
           

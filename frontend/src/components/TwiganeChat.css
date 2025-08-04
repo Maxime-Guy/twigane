@@ -846,77 +846,7 @@
   }
 }
 
-/* =============== AVAILABLE SENTENCES UI =============== */
-.available-sentences {
-  margin-top: 12px;
-  padding: 12px;
-  background: #f8f9fc;
-  border-radius: 8px;
-  border-left: 4px solid #667eea;
-}
 
-.sentence-category {
-  margin-bottom: 16px;
-}
-
-.sentence-category:last-child {
-  margin-bottom: 0;
-}
-
-.category-title {
-  font-size: 0.8em;
-  font-weight: 600;
-  color: #4a5568;
-  margin: 0 0 8px 0;
-  text-transform: capitalize;
-}
-
-.sentences-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.sentence-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 0.75em;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.sentence-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(102, 126, 234, 0.3);
-  background: linear-gradient(135deg, #5a67d8 0%, #6b5b95 100%);
-}
-
-.sentence-button:active {
-  transform: translateY(0);
-}
-
-/* Mobile responsiveness for available sentences */
-@media (max-width: 768px) {
-  .available-sentences {
-    padding: 8px;
-  }
-  
-  .sentence-button {
-    font-size: 0.7em;
-    padding: 5px 8px;
-  }
-  
-  .category-title {
-    font-size: 0.75em;
-  }
-}
 
 /* =============== NATIVE WORDS DROPDOWN =============== */
 .native-words-dropdown {
