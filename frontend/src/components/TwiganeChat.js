@@ -18,9 +18,15 @@ const TwiganeChat = () => {
   
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [backendStatus, setBackendStatus] = useState({ connected: false, teachingModel: false, ttsSystem: false });
+  const [backendStatus, setBackendStatus] = useState({ connected: false, teachingModel: false, commonVoiceAudio: false });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showLearningTools, setShowLearningTools] = useState(false);
+  
+  // State for available sentences
+  const [availableSentences, setAvailableSentences] = useState(null);
+  const [showAvailableSentences, setShowAvailableSentences] = useState(false);
+  const [loadingAvailableSentences, setLoadingAvailableSentences] = useState(false);
+  const [showNativeWordsDropdown, setShowNativeWordsDropdown] = useState(false);
   const audioRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -36,15 +42,15 @@ const TwiganeChat = () => {
         setBackendStatus({
           connected: true,
           teachingModel: data.teaching_model,
-          ttsSystem: data.tts_system,
+          commonVoiceAudio: data.common_voice_audio,
           availableWords: data.available_words
         });
       } else {
-        setBackendStatus({ connected: false, teachingModel: false, ttsSystem: false });
+        setBackendStatus({ connected: false, teachingModel: false, commonVoiceAudio: false });
       }
     } catch (error) {
       console.error('Backend connection error:', error);
-      setBackendStatus({ connected: false, teachingModel: false, ttsSystem: false });
+      setBackendStatus({ connected: false, teachingModel: false, commonVoiceAudio: false });
     }
   }, [API_URL]);
 
@@ -73,30 +79,42 @@ const TwiganeChat = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const playAudio = async (audioPath) => {
+  const playAudio = async (audioPath, audioSource = 'unknown') => {
     try {
       if (audioRef.current) {
         audioRef.current.pause();
       }
       
-      // If audioPath already includes the full URL (starts with /audio/), use it directly
+      // Handle different audio URL formats
       let audioUrl;
-      if (audioPath.startsWith('/audio/')) {
+      if (audioPath.startsWith('/common-voice-audio/')) {
+        // Common Voice audio (native speaker recordings)
+        audioUrl = `${API_URL}${audioPath}`;
+      } else if (audioPath.startsWith('/audio/')) {
+        // Legacy TTS audio
         audioUrl = `${API_URL}${audioPath}`;
       } else {
+        // Fallback: assume it's a filename and try both systems
         const filename = audioPath.split('/').pop();
-        audioUrl = `${API_URL}/audio/${filename}`;
+        // Default to Common Voice first, then legacy TTS
+        audioUrl = audioSource === 'tts_generated' 
+          ? `${API_URL}/audio/${filename}`
+          : `${API_URL}/common-voice-audio/${filename}`;
       }
       
-      console.log('Playing audio from:', audioUrl); // Debug log
+      console.log('Playing audio from:', audioUrl, 'Source:', audioSource); // Debug log
       
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
       
       await audio.play();
       
+      // Show appropriate status message based on source
+      const sourceText = audioSource === 'common_voice' ? 'native speaker' : 
+                        audioSource === 'tts_generated' ? 'generated' : '';
+      
       addMessage({
-        text: `🎵 Playing audio for pronunciation...`,
+        text: `🎵 Playing ${sourceText} audio for pronunciation...`,
         sender: 'bot',
         type: 'audio-status'
       });
@@ -108,6 +126,82 @@ const TwiganeChat = () => {
         sender: 'bot',
         type: 'error'
       });
+    }
+  };
+
+  const fetchAvailableSentences = async () => {
+    if (loadingAvailableSentences || availableSentences) return;
+    
+    setLoadingAvailableSentences(true);
+    try {
+      const response = await fetch(`${API_URL}/available-sentences`);
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableSentences(data);
+        
+        // Add a message showing available sentences
+        const categoriesText = Object.entries(data.categories)
+          .map(([category, sentences]) => `${category}: ${sentences.length} words`)
+          .join(', ');
+        
+        addMessage({
+          text: `📢 I have ${data.total} words and phrases with native speaker recordings! Categories: ${categoriesText}. Click on any sentence below to hear it pronounced:`,
+          sender: 'bot',
+          type: 'available-sentences',
+          categories: data.categories,
+          sentences: data.sentences,
+          total: data.total
+        });
+        
+        setShowAvailableSentences(true);
+      } else {
+        addMessage({
+          text: `❌ Couldn't load available sentences. The audio system might not be ready yet.`,
+          sender: 'bot',
+          type: 'error'
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching available sentences:', error);
+      addMessage({
+        text: `❌ Error loading available sentences. Please try again later.`,
+        sender: 'bot',
+        type: 'error'
+      });
+    } finally {
+      setLoadingAvailableSentences(false);
+    }
+  };
+
+  const loadNativeWordsDropdown = async () => {
+    if (availableSentences) {
+      setShowNativeWordsDropdown(!showNativeWordsDropdown);
+      return;
+    }
+    
+    setLoadingAvailableSentences(true);
+    try {
+      const response = await fetch(`${API_URL}/available-sentences`);
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableSentences(data);
+        setShowNativeWordsDropdown(true);
+      } else {
+        addMessage({
+          text: `❌ Couldn't load native words. The audio system might not be ready yet.`,
+          sender: 'bot',
+          type: 'error'
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching native words:', error);
+      addMessage({
+        text: `❌ Error loading native words. Please try again later.`,
+        sender: 'bot',
+        type: 'error'
+      });
+    } finally {
+      setLoadingAvailableSentences(false);
     }
   };
 
@@ -190,14 +284,29 @@ const TwiganeChat = () => {
         }
 
         if (data.type === 'pronunciation' && data.audio_url) {
+          // Determine audio source and show appropriate message
+          const isNativeSpeaker = data.source === 'common_voice';
+          const audioSourceText = isNativeSpeaker ? '(native speaker)' : 
+                                 data.source === 'tts_generated' ? '(generated)' : '';
+          
+          let buttonText = `🎵 Click to hear "${data.word}" pronounced ${audioSourceText}`;
+          
+          // Add voting info for Common Voice recordings
+          if (isNativeSpeaker && data.votes) {
+            buttonText += ` [👍${data.votes.up} 👎${data.votes.down}]`;
+          }
+          
           addMessage({
-            text: `🎵 Click to hear "${data.word}" pronounced:`,
+            text: buttonText,
             sender: 'bot',
             type: 'audio-button',
             audioPath: data.audio_url,
+            audioSource: data.source,
             word: data.word,
             enhancedPronunciation: data.enhanced_pronunciation,
-            duration: data.duration
+            duration: data.duration,
+            votes: data.votes,
+            availableCount: data.available_count
           });
         }
         
@@ -298,13 +407,46 @@ const TwiganeChat = () => {
             <div className="audio-controls">
               <button 
                 className="audio-play-btn"
-                onClick={() => playAudio(message.audioPath)}
+                onClick={() => playAudio(message.audioPath, message.audioSource)}
               >
-                🎵 Play Audio ({message.duration?.toFixed(1)}s)
+                🎵 Play Audio {message.duration ? `(${message.duration.toFixed(1)}s)` : ''}
               </button>
               <div className="pronunciation-info">
-                <small>Enhanced: {message.enhancedPronunciation}</small>
+                {message.enhancedPronunciation && (
+                  <small>Enhanced: {message.enhancedPronunciation}</small>
+                )}
+                {message.audioSource === 'common_voice' && (
+                  <small>📢 Native speaker recording</small>
+                )}
+                {message.audioSource === 'tts_generated' && (
+                  <small>🤖 Generated audio</small>
+                )}
+                {message.availableCount && (
+                  <small>💡 {message.availableCount} words available with native recordings</small>
+                )}
               </div>
+            </div>
+          )}
+          
+          {message.type === 'available-sentences' && message.categories && (
+            <div className="available-sentences">
+              {Object.entries(message.categories).map(([category, sentences]) => (
+                <div key={category} className="sentence-category">
+                  <h4 className="category-title">{category.replace('_', ' ').toUpperCase()} ({sentences.length} words)</h4>
+                  <div className="sentences-grid">
+                    {sentences.map((sentence, index) => (
+                      <button
+                        key={index}
+                        className="sentence-button"
+                        onClick={() => setQuickQuestion(`How does "${sentence}" sound?`)}
+                        title={`Click to hear "${sentence}" pronounced`}
+                      >
+                        🔊 {sentence}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
           
@@ -376,6 +518,14 @@ const TwiganeChat = () => {
         </div>
         <div className="header-right">
           <button 
+            className="native-words-toggle"
+            onClick={loadNativeWordsDropdown}
+            title="Native Speaker Words"
+            disabled={loadingAvailableSentences}
+          >
+            {loadingAvailableSentences ? '⏳' : '🎙️'}
+          </button>
+          <button 
             className="toolbar-toggle"
             onClick={() => setShowLearningTools(!showLearningTools)}
             title="Learning Tools"
@@ -391,6 +541,113 @@ const TwiganeChat = () => {
           </button>
         </div>
       </div>
+
+      {/* Native Words Dropdown */}
+      {showNativeWordsDropdown && availableSentences && (
+        <div className="native-words-dropdown">
+          <div className="dropdown-header">
+            <h3>🎙️ Native Speaker Words ({availableSentences.total})</h3>
+            <button 
+              className="close-dropdown"
+              onClick={() => setShowNativeWordsDropdown(false)}
+              title="Close"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="dropdown-content">
+            {Object.entries(availableSentences.categories).map(([category, sentences]) => (
+              sentences.length > 0 && (
+                <div key={category} className="word-category">
+                  <h4 className="category-header">
+                    {category.replace('_', ' ').toUpperCase()} ({sentences.length})
+                  </h4>
+                  <div className="words-grid">
+                    {sentences.map((sentence, index) => (
+                      <button
+                        key={index}
+                        className="word-button"
+                        onClick={async () => {
+                          const question = `How does "${sentence}" sound?`;
+                          setShowNativeWordsDropdown(false);
+                          
+                          // Add user message
+                          addMessage({
+                            text: question,
+                            sender: 'user'
+                          });
+                          
+                          // Send to backend
+                          setIsLoading(true);
+                          try {
+                            const response = await fetch(`${API_URL}/chat`, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ question })
+                            });
+                            
+                            if (response.ok) {
+                              const data = await response.json();
+                              
+                              const botMessage = {
+                                text: data.response,
+                                sender: 'bot',
+                                type: data.type || 'chat',
+                                category: data.category,
+                                difficulty: data.difficulty,
+                                confidence: data.confidence
+                              };
+                              
+                              addMessage(botMessage);
+                              
+                              if (data.type === 'pronunciation' && data.audio_url) {
+                                const isNativeSpeaker = data.source === 'common_voice';
+                                const audioSourceText = isNativeSpeaker ? '(native speaker)' : 
+                                                       data.source === 'tts_generated' ? '(generated)' : '';
+                                
+                                let buttonText = `🎵 Click to hear "${data.word}" pronounced ${audioSourceText}`;
+                                
+                                if (isNativeSpeaker && data.votes) {
+                                  buttonText += ` [👍${data.votes.up} 👎${data.votes.down}]`;
+                                }
+                                
+                                addMessage({
+                                  text: buttonText,
+                                  sender: 'bot',
+                                  type: 'audio-button',
+                                  audioPath: data.audio_url,
+                                  audioSource: data.source,
+                                  word: data.word,
+                                  enhancedPronunciation: data.enhanced_pronunciation,
+                                  duration: data.duration,
+                                  votes: data.votes,
+                                  availableCount: data.available_count
+                                });
+                              }
+                            }
+                          } catch (error) {
+                            console.error('Error:', error);
+                            addMessage({
+                              text: `❌ Error getting pronunciation. Please try again.`,
+                              sender: 'bot',
+                              type: 'error'
+                            });
+                          } finally {
+                            setIsLoading(false);
+                          }
+                        }}
+                        title={`Click to hear "${sentence}" pronounced by a native speaker`}
+                      >
+                        🔊 {sentence}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="chat-body">
         {/* Messages Area */}

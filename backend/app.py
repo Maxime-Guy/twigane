@@ -23,6 +23,7 @@ import werkzeug
 from huggingface_hub import hf_hub_download, snapshot_download
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import requests
+from common_voice_audio import CommonVoiceAudioSystem
 
 # Add models to path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'models', 'kinyarwanda-tts'))
@@ -247,16 +248,16 @@ class HuggingFaceTranslationModel:
 class TwiganeBackend:
     def __init__(self):
         self.teaching_model = None
-        self.tts_system = None
+        self.common_voice_system = None  # Common Voice system (primary audio source)
         self.translation_model = None
         self.model_loaded = False
-        self.tts_loaded = False
+        self.common_voice_loaded = False
         self.translation_loaded = False
         self.vectorizer = None
         
         # Load systems
         self.load_teaching_model()
-        self.load_tts_system()
+        self.load_common_voice_system()
         self.load_translation_model()
     
     def load_teaching_model(self):
@@ -407,31 +408,25 @@ class TwiganeBackend:
         except Exception as e:
             logger.error(f"❌ Failed to load local fallback model: {e}")
     
-    def load_tts_system(self):
-        """Load the TTS system (unchanged - still local)"""
+    def load_common_voice_system(self):
+        """Load the Common Voice audio system"""
         try:
-            # Add the TTS directory to Python path
-            tts_dir = Path("../models/kinyarwanda-tts")
-            sys.path.append(str(tts_dir))
+            logger.info("🔄 Loading Common Voice audio system...")
+            self.common_voice_system = CommonVoiceAudioSystem()
             
-            from improved_tts_api import ImprovedKinyarwandaTTS
-            
-            # Initialize TTS with model directory
-            self.tts_system = ImprovedKinyarwandaTTS(
-                audio_dir=str(tts_dir / "audio"),
-                results_file=str(tts_dir / "audio_results.json")
-            )
-            
-            self.tts_loaded = True
-            logger.info("✅ TTS system loaded successfully")
-            
-            # Log available words
-            available_words = self.tts_system.list_available_words()
-            logger.info(f"📊 TTS has {len(available_words)} pre-generated audio files")
-            
+            if self.common_voice_system.load_dataset():
+                self.common_voice_loaded = True
+                stats = self.common_voice_system.get_system_stats()
+                logger.info(f"✅ Common Voice system loaded: {stats['total_audio_files']} audio files")
+            else:
+                self.common_voice_loaded = False
+                logger.error("❌ Failed to load Common Voice dataset")
+                
         except Exception as e:
-            logger.error(f"❌ Failed to load TTS system: {e}")
+            logger.error(f"❌ Failed to load Common Voice system: {e}")
+            self.common_voice_loaded = False
     
+
     def load_translation_model(self):
         """Load the translation model from Hugging Face"""
         try:
@@ -836,69 +831,74 @@ class TwiganeBackend:
         return self.get_enhanced_teaching_response(question)
 
     def get_pronunciation_response(self, question):
-        """Get pronunciation response with audio"""
+        """Get pronunciation response with audio using Common Voice dataset only"""
         
-        if not self.tts_loaded:
+        # Extract word/phrase to pronounce
+        user_text = self.extract_word_for_pronunciation(question)
+        if not user_text:
+            user_text = question  # Use full question if no specific word extracted
+        
+        # Check if Common Voice system is available
+        if not self.common_voice_loaded:
             return {
-                "response": "Pronunciation system is not available right now. Please try again later.",
+                "response": "Native speaker audio system is not available right now. Please try again later.",
+                "word": user_text,
                 "type": "pronunciation",
-                "confidence": 0.0
+                "confidence": 0.1,
+                "source": "none"
             }
         
-        # Extract word to pronounce
-        word = self.extract_word_for_pronunciation(question)
+        # Try to find audio in Common Voice system
+        audio_info = self.common_voice_system.find_audio_for_text(user_text)
         
-        if word:
-            try:
-                # Try to get existing audio first, then generate if needed
-                audio_result = self.tts_system.get_audio_for_word(word)
-                
-                # If no audio found, try to generate it
-                if not audio_result:
-                    logger.info(f"No existing audio for '{word}', attempting to generate...")
-                    audio_result = self.tts_system.generate_audio_for_word(word)
-                
-                if audio_result and audio_result.get('path'):
-                    # Get teaching response about the word
-                    teaching_response = self.get_teaching_response(f"What does {word} mean?")
-                    
-                    # Extract filename from path - handle both 'path' and 'audio_path' keys
-                    audio_path = audio_result.get('path') or audio_result.get('audio_path')
-                    audio_filename = os.path.basename(audio_path)
-                    
-                    return {
-                        "response": f"Here's how to pronounce '{word}' in Kinyarwanda:",
-                        "audio_file": audio_filename,
-                        "audio_url": f"/audio/{audio_filename}",
-                        "word": word,
-                        "type": "pronunciation",
-                        "teaching_info": teaching_response.get('response', ''),
-                        "confidence": 0.95
-                    }
-                else:
-                    return {
-                        "response": f"I don't have audio for '{word}' yet, but I can help you with its meaning and usage in Kinyarwanda.",
-                        "word": word,
-                        "type": "pronunciation",
-                        "confidence": 0.3
-                    }
-                    
-            except Exception as e:
-                logger.error(f"TTS error for word '{word}': {e}")
-                logger.error(f"TTS system loaded: {self.tts_loaded}")
-                logger.error(f"TTS system type: {type(self.tts_system) if hasattr(self, 'tts_system') else 'Not set'}")
-                return {
-                    "response": f"I'm having trouble generating audio for '{word}' right now, but I can help you learn about it.",
-                    "word": word,
-                    "type": "pronunciation",
-                    "confidence": 0.2
+        if audio_info:
+            # Found matching audio in Common Voice
+            sentence = audio_info['original_sentence']
+            audio_filename = audio_info['audio_filename']
+            
+            # Get teaching response about the word/phrase
+            teaching_response = self.get_teaching_response(f"What does {sentence} mean?")
+            
+            return {
+                "response": f"Here's how to pronounce '{sentence}' in Kinyarwanda (from native speaker):",
+                "audio_file": audio_filename,
+                "audio_url": f"/common-voice-audio/{audio_filename}",
+                "word": sentence,
+                "type": "pronunciation",
+                "teaching_info": teaching_response.get('response', ''),
+                "confidence": 0.98,
+                "source": "common_voice",
+                "votes": {
+                    "up": audio_info.get('up_votes', 0),
+                    "down": audio_info.get('down_votes', 0)
                 }
-        else:
-            return {
-                "response": "I'd be happy to help with pronunciation! Please ask something like 'How does [word] sound?' or 'Pronounce [word]' and I'll generate the audio for you.",
-                "type": "pronunciation",
-                "confidence": 0.1
             }
+        
+        # No audio available - provide helpful response with suggestions
+        available_count = len(self.common_voice_system.get_available_sentences())
+        available_sentences = self.common_voice_system.get_available_sentences()
+        
+        # Try to suggest similar words
+        suggestions = []
+        user_lower = user_text.lower()
+        for sentence in available_sentences[:5]:  # Show first 5 as examples
+            if any(word in sentence.lower() for word in user_lower.split()) or \
+               any(word in user_lower for word in sentence.lower().split()):
+                suggestions.append(sentence)
+        
+        suggestion_text = ""
+        if suggestions:
+            suggestion_text = f" Try these similar words: {', '.join(suggestions[:3])}"
+        
+        return {
+            "response": f"I don't have native speaker audio for '{user_text}' yet. I currently have {available_count} words and phrases with native recordings.{suggestion_text} Click the 🎙️ button in the header to browse all available words!",
+            "word": user_text,
+            "type": "pronunciation",
+            "confidence": 0.2,
+            "source": "none",
+            "available_count": available_count,
+            "suggestions": suggestions[:3]
+        }
 
 # Initialize Flask app and backend
 app = Flask(__name__)
@@ -934,13 +934,13 @@ def health_check():
         "timestamp": datetime.now().isoformat(),
         "components": {
             "teaching_model": "loaded" if backend.model_loaded else "error",
-            "tts_system": "loaded" if backend.tts_loaded else "error", 
+            "common_voice_audio": "loaded" if backend.common_voice_loaded else "error", 
             "translation_model": "loaded" if backend.translation_loaded else "error",
             "quiz_system": "loaded" if quiz_loaded else "error"
         },
         "model_info": {
             "teaching_responses": len(backend.texts) if backend.model_loaded and hasattr(backend, 'texts') else 0,
-            "tts_words": len(backend.tts_system.list_available_words()) if backend.tts_loaded else 0,
+            "native_audio_words": len(backend.common_voice_system.get_available_sentences()) if backend.common_voice_loaded else 0,
             "translation_source": "Hugging Face" if backend.translation_loaded else "unavailable"
         },
         "performance": {
@@ -963,15 +963,16 @@ def get_stats():
     stats = {
         "model_status": {
             "teaching_model": backend.model_loaded,
-            "tts_system": backend.tts_loaded,
+            "common_voice_audio": backend.common_voice_loaded,
             "translation_model": backend.translation_loaded,
             "quiz_system": quiz_loaded
         },
         "model_details": {
             "teaching_model_name": "Twigane Enhanced Teaching Model (HF)",
             "translation_model_name": "mbazaNLP/Nllb_finetuned_general_en_kin (HF)",
+            "audio_system_name": "Mozilla Common Voice (Native Speakers)",
             "total_responses": len(backend.texts) if backend.model_loaded and hasattr(backend, 'texts') else 0,
-            "tts_words_available": len(backend.tts_system.list_available_words()) if backend.tts_loaded else 0
+            "native_audio_available": len(backend.common_voice_system.get_available_sentences()) if backend.common_voice_loaded else 0
         },
         "system_performance": {
             "uptime_hours": round((datetime.now() - analytics_data["system_performance"]["uptime_start"]).total_seconds() / 3600, 2),
@@ -1207,7 +1208,7 @@ def admin_analytics():
             "system_health": {
                 "teaching_model": backend.model_loaded,
                 "translation_model": backend.translation_loaded,
-                "tts_system": backend.tts_loaded,
+                "common_voice_audio": backend.common_voice_loaded,
                 "quiz_system": quiz_loaded,
                 "uptime_hours": round((datetime.now() - analytics_data["system_performance"]["uptime_start"]).total_seconds() / 3600, 2)
             },
@@ -1329,18 +1330,52 @@ def learner_dashboard():
         logger.error(f"Learner dashboard error: {e}")
         return jsonify({"error": "Failed to get dashboard data"}), 500
 
-@app.route('/audio/<filename>')
-def serve_audio(filename):
-    """Serve audio files for pronunciation"""
+
+
+@app.route('/common-voice-audio/<filename>')
+def serve_common_voice_audio(filename):
+    """Serve Common Voice audio files for pronunciation"""
     try:
-        if backend.tts_loaded:
-            audio_dir = Path("../models/kinyarwanda-tts/audio")
+        if backend.common_voice_loaded:
+            audio_dir = backend.common_voice_system.clips_path
             return send_from_directory(str(audio_dir), filename)
         else:
-            return jsonify({"error": "Audio system not available"}), 503
+            return jsonify({"error": "Common Voice audio system not available"}), 503
     except Exception as e:
-        logger.error(f"Audio serving error: {e}")
-        return jsonify({"error": "Audio file not found"}), 404
+        logger.error(f"Common Voice audio serving error: {e}")
+        return jsonify({"error": "Common Voice audio file not found"}), 404
+
+@app.route('/available-sentences')
+def get_available_sentences():
+    """Get list of available sentences with audio recordings"""
+    try:
+        if not backend.common_voice_loaded:
+            return jsonify({
+                "error": "Common Voice system not available",
+                "sentences": [],
+                "categories": {},
+                "total": 0
+            }), 503
+        
+        sentences = backend.common_voice_system.get_available_sentences()
+        categories = backend.common_voice_system.get_sentences_by_category()
+        stats = backend.common_voice_system.get_system_stats()
+        
+        return jsonify({
+            "sentences": sentences,
+            "categories": categories,
+            "total": len(sentences),
+            "stats": stats
+        })
+        
+    except Exception as e:
+        logger.error(f"Available sentences error: {e}")
+        return jsonify({
+            "error": "Failed to get available sentences",
+            "sentences": [],
+            "categories": {},
+            "total": 0
+        }), 500
 
 if __name__ == '__main__':
     print("\n" + "="*60)
@@ -1349,7 +1384,7 @@ if __name__ == '__main__':
     print("🤖 Features:")
     print("   📚 Teaching Model (from Hugging Face)")
     print("   🔄 Translation Model (from Hugging Face)")  
-    print("   🔊 TTS System (local)")
+    print("   🎙️ Common Voice Audio (native speaker recordings)")
     print("   📊 Analytics & Admin Dashboard")
     print("   🧪 Quiz System")
     print("="*60)
@@ -1361,6 +1396,8 @@ if __name__ == '__main__':
     print("   GET /quiz/* - Quiz endpoints")
     print("   GET /admin/* - Admin analytics (admin only)")
     print("   GET /learner/dashboard - Learner dashboard")
+    print("   GET /common-voice-audio/<filename> - Native speaker audio")
+    print("   GET /available-sentences - List of available sentences")
     print("="*60)
     print("⚙️  Configuration:")
     print(f"   🤗 Teaching Model: {TEACHING_MODEL_REPO}")
