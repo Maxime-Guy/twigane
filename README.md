@@ -16,7 +16,7 @@
 
 **🌐 <a href="https://twigane.netlify.app/" target="_blank">Visit Live Application</a>**
 
-**📺 <a href="https://youtu.be/oBabq0fpe04" target="_blank">
+**📺 <a href="https://youtu.be/9MnFIjpdWVA" target="_blank">
 <img src="https://img.shields.io/badge/Demo_Video-Watch_on_YouTube-red?style=for-the-badge&logo=youtube" alt="Demo Video">
 </a>**
 
@@ -33,7 +33,7 @@ The platform offers a complete learning ecosystem featuring AI-powered conversat
 - **🤖 AI-Powered Conversations** - Practice real-world scenarios with intelligent chat responses
 - **🔄 Smart Translation System** - Instant translation between Kinyarwanda and other languages
 - **🧠 Interactive Quizzes** - Test knowledge with dynamic, categorized assessments
-- **🔊 Pronunciation Guide** - Native-like audio for perfect pronunciation
+- **🔊 Native Pronunciation** - Authentic recordings from native Kinyarwanda speakers
 - **📊 Progress Analytics** - Comprehensive tracking of learning journey and achievements
 - **✍️ Text Generation** - Create content and practice writing skills with AI assistance
 
@@ -52,8 +52,14 @@ Instantly translate text between Kinyarwanda and other languages. Perfect for un
 ### 🧠 **Interactive Quizzes**
 Test your knowledge with dynamic quizzes covering vocabulary, grammar, and comprehension. Features multiple categories, difficulty levels, and detailed progress tracking.
 
-### 🔊 **Pronunciation Guide**
-Master authentic Kinyarwanda pronunciation with our text-to-speech system. Hear native-like pronunciation for words, phrases, and complete sentences.
+### 🔊 **Native Pronunciation**
+Master authentic Kinyarwanda pronunciation with real recordings from native speakers. Access 46+ words and phrases with genuine pronunciation through our interactive dropdown interface.
+
+**🎙️ Native Words Dropdown**: Click the microphone button in the header to browse all available words organized by categories:
+- **Numbers**: gatanu (5), zeru (0), kabiri (2), icyenda (9)
+- **Common Words**: murwanda (Rwanda), amakuru (news), oya (no)  
+- **Phrases**: amakuru mashya (new news), ku isi (on earth)
+- **One-Click Play**: Instant native pronunciation with single click
 
 ### 📊 **Progress Dashboard**
 Monitor your learning journey with detailed analytics including:
@@ -81,7 +87,7 @@ Optimized experience across all devices - desktop, tablet, and mobile with touch
 ### **Backend (Local Development)**
 - **🐍 Framework**: Flask 3.0.0 with Python
 - **🤖 AI Models**: Transformers with PyTorch
-- **🔊 TTS**: Google Text-to-Speech (gTTS)
+- **🔊 Audio**: Mozilla Common Voice native speaker recordings
 - **📡 API**: RESTful endpoints for chat, translation, and quizzes
 
 ### **Database & Services**
@@ -125,15 +131,15 @@ twigane/
 │   ├── requirements.txt       # Python dependencies
 │   ├── quiz_data.py          # Quiz questions and logic
 │   └── test_backend.py       # API testing suite
-├── models/                     # AI models and TTS system
+├── models/                     # AI models and audio system
 ├── notebooks/                  # Jupyter notebooks for development
 │   ├── kinyarwanda_data_exploration.ipynb
 │   ├── kinyarwanda_scratch_training.ipynb
 │   └── simple_translation_model.ipynb
 ├── datasets/                   # Training data and audio corpus
 │   ├── kinyarwanda_dataset_final.jsonl
-│   ├── tts_data.csv
-│   ├── cv-corpus-21.0-delta-2025-03-14/ # Common Voice Kinyarwanda
+│   ├── cv-corpus-21.0-delta-2025-03-14/ # Common Voice Kinyarwanda (Native Audio)
+│   │   └── rw/clips/          # 46+ native speaker MP3 recordings
 │   └── learn-kinyarwanda.pdf
 └── upload_models_to_hf.py     # HuggingFace model deployment
 ```
@@ -190,7 +196,7 @@ python app.py
 ```
 
 #### **Firebase Configuration**
-1. Create a Firebase project at [https://console.firebase.google.com/](https://console.firebase.google.com/)
+1. Create a Firebase project at <a href="https://console.firebase.google.com/" target="_blank">https://console.firebase.google.com/</a>
 2. Enable Authentication (Email/Password, Google)
 3. Enable Firestore Database
 4. Add your configuration to `frontend/.env`:
@@ -209,7 +215,7 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 ### **💬 AI Chat System**
 - **Intelligent Responses**: Context-aware conversations about Kinyarwanda
 - **Learning Categories**: Greetings, family, numbers, culture, and conversation
-- **Pronunciation Help**: Integrated audio playback for proper pronunciation
+- **Native Pronunciation**: Integrated playback with authentic native speaker recordings
 - **Teaching Mode**: Structured responses with explanations and examples
 - **Activity Tracking**: All conversations logged for progress analysis
 
@@ -241,11 +247,11 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 - **Feature Usage**: Comprehensive tracking of all platform interactions
 - **Performance Metrics**: Response times, success rates, and system statistics
 
-### **🔊 Pronunciation System**
-- **Native Audio**: High-quality Kinyarwanda pronunciation using Google TTS
-- **Enhanced Phonetics**: Special handling for Kinyarwanda sound patterns
-- **Interactive Playback**: Click-to-play audio in chat and translation interfaces
-- **Audio Caching**: Optimized loading for common words and phrases
+### **🔊 Native Pronunciation System**
+- **Authentic Recordings**: Real native speaker audio from Mozilla Common Voice dataset
+- **Interactive Dropdown**: Browse 46+ available words organized by categories (Numbers, Words, Phrases)
+- **One-Click Playback**: Instant pronunciation with single click access
+- **Quality Assurance**: Community-validated recordings with voting information
 
 ### **🎨 User Experience**
 - **Role-Based Access**: Separate experiences for learners and administrators
@@ -271,10 +277,10 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 | `/api/chat` | POST | AI-powered conversation responses |
 | `/api/translate` | POST | Text translation between languages |
 | `/api/quiz` | POST | Dynamic quiz question generation |
-| `/pronounce` | POST | Text-to-speech audio generation |
+| `/available-sentences` | GET | List all available native speaker recordings |
 | `/learner/dashboard` | GET | Learner progress and analytics |
 | `/admin/dashboard` | GET | Administrator system insights |
-| `/audio/<filename>` | GET | Serve generated audio files |
+| `/common-voice-audio/<filename>` | GET | Serve native speaker audio files |
 
 ### **📊 Data Models**
 
@@ -328,19 +334,20 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
   - Difficulty level assessment
   - Confidence scoring
 
-### TTS System
+### Native Audio System
 
-- **Engine**: Google TTS (gTTS)
-- **Enhancement**: Custom Kinyarwanda pronunciation rules
-- **Caching**: Pre-generated audio files
-- **Formats**: WAV, MP3 support
+- **Source**: Mozilla Common Voice Kinyarwanda dataset
+- **Quality**: Authentic native speaker recordings
+- **Coverage**: 46+ validated words and phrases
+- **Categories**: Numbers, words, phrases organized in interactive dropdown
+- **Format**: High-quality MP3 files with community validation
 
 ## 📚 **Data & Content**
 
 ### **Training Datasets**
 - **Kinyarwanda Learning Dataset**: 510 high-quality instruction-response pairs
 - **Common Voice Kinyarwanda**: Mozilla's open-source audio corpus
-- **Custom TTS Data**: Curated pronunciation examples and phonetic rules
+- **Mozilla Common Voice**: Native speaker audio corpus with community validation
 - **Quiz Database**: Comprehensive question bank across multiple categories
 
 ### **Content Categories**
@@ -352,10 +359,11 @@ REACT_APP_FIREBASE_APP_ID=your_app_id
 - **📖 Grammar & Structure**: Language rules, sentence construction, verb conjugations
 
 ### **Audio Resources**
-- **Format**: MP3/WAV high-quality audio files
-- **Source**: Google Text-to-Speech with Kinyarwanda optimization
-- **Coverage**: 50+ common words and phrases
-- **Quality**: Native-like pronunciation with enhanced phonetic rules
+- **Format**: High-quality MP3 audio files
+- **Source**: Mozilla Common Voice - authentic native speaker recordings
+- **Coverage**: 46+ validated words and phrases with community ratings
+- **Quality**: Genuine native pronunciation with voting-based quality assurance
+- **Access**: Interactive dropdown with categorized browsing (🎙️ button in header)
 
 ## 🛠️ **Development & Deployment**
 
@@ -520,12 +528,13 @@ We welcome contributions to make Twigane even better! Here's how you can help:
 - [ ] **Backend Deployment**: Deploy Flask API to cloud platform with sufficient memory
 - [ ] **Content Expansion**: Add more quiz questions and conversation scenarios
 - [ ] **Model Optimization**: Improve AI response accuracy and speed
-- [ ] **Audio Quality**: Enhance pronunciation and add more audio samples
+- [x] **Native Audio System**: ✅ Implemented with 46+ native speaker recordings from Common Voice
 
 #### **Feature Enhancement**
 - [ ] **Gamification**: Achievement systems, leaderboards, learning streaks
 - [ ] **Social Learning**: User communities, shared progress, study groups
 - [ ] **Advanced Analytics**: Learning pattern analysis, personalized recommendations
+- [ ] **Audio Expansion**: Add more Common Voice recordings and pronunciation variants
 - [ ] **Mobile App**: Native iOS/Android applications
 - [ ] **Offline Mode**: Cached content for learning without internet
 
